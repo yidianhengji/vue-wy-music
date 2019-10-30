@@ -1,5 +1,8 @@
 <template>
   <div class="login">
+    <div class="login-logo">
+      <i class="icon pfont pyinleyanzou"></i>
+    </div>
     <div class="login-bottom">
       <a class="login-bottom-btn" href="javascript:;" @click="loginSubmisBtn">手机号登录</a>
       <div class="login-agreement-text">
@@ -32,9 +35,24 @@ export default {
   position relative
   width 100%
   height 100%
-  background #D32F2F
+  background #B71C1C
   color #ffffff
   overflow hidden
+  .login-logo
+    position absolute
+    left 50%
+    top 80px
+    width 54px
+    height 54px
+    display flex
+    justify-content center
+    align-items center
+    background #D32F2F
+    border-radius 50%
+    margin-left -27px
+    i
+      font-size 24px
+      font-weight 600
   .login-bottom
     position absolute
     left 40px
