@@ -27,6 +27,11 @@ export default {
     loginSubmisBtn() {
       if (this.option) {
         this.$router.push({ path: "/mobileLogin" });
+      } else {
+        this.$message({
+          message: "请先勾选同意《用户协议》《隐私政策》《儿童隐私政策》",
+          duration: 2000
+        });
       }
     },
     toggleOption() {

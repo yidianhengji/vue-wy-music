@@ -1,5 +1,7 @@
 <template>
-  <div>{{data}}</div>
+  <div>
+    {{data}}
+	</div>
 </template>
 
 <script>
@@ -11,7 +13,7 @@ export default {
     };
   },
   mounted() {
-    this.submiBtn();
+    //this.submiBtn();
   },
   methods: {
     submiBtn() {
@@ -29,3 +31,4 @@ export default {
   }
 }
 </script>
+

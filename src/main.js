@@ -6,6 +6,9 @@ import "./assets/css/reast.css"
 import "./assets/css/animate.css"
 import "./assets/font/iconfont.css"
 
+import message from "./plugin/message"
+Vue.use(message)
+
 Vue.config.productionTip = false
 
 new Vue({
