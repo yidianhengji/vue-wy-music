@@ -1,28 +1,30 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-
-Vue.use(VueRouter);
-
+import Vue from "vue"
+import VueRouter from "vue-router"
+Vue.use(VueRouter)
+import home from "@/views/home/index.vue"
+import login from "@/views/login/index.vue"
+import loginMobile from "@/views/login/mobile-login.vue"
+import user from "@/views/user.vue"
 const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import("../views/home/index.vue")
+    component: home
   },
   {
-    path: "/home",
-    name: "home",
-    component: () => import("../views/home/index.vue")
+    path: "/user",
+    name: "user",
+    component: user
   },
   {
     path: "/login",
     name: "登录",
-    component: () => import("../views/login/index.vue")
+    component: login
   },
   {
     path: "/mobileLogin",
     name: "手机号登陆",
-    component: () => import("../views/login/mobile-login.vue")
+    component: loginMobile
   }
 ];
 

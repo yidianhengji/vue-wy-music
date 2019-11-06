@@ -1,5 +1,5 @@
 <template>
-  <div class="alert bounceInUp animated" ref="el-message">
+  <div class="alert bounceInUp animated" ref="el-message" :style="positionStyle">
     <slot>
       <span>{{message}}</span>
     </slot>
@@ -13,8 +13,35 @@ export default {
     return {
       timer: null,
       duration: 3000,
-      message: ""
+      message: "",
+      verticalOffset: 20,
+      onClose: null
     };
+  },
+  computed: {
+    positionStyle() {
+      return {
+        bottom: `${this.verticalOffset}px`
+      };
+    }
+  },
+  methods: {
+    close() {
+      if (typeof this.onClose === "function") {
+        this.onClose(this);
+      }
+    },
+    startTimer() {
+      if (this.duration > 0) {
+        this.timer = setTimeout(() => {
+          this.close();
+        }, this.duration);
+        console.log(this.duration)
+      }
+    }
+  },
+  mounted() {
+    this.startTimer();
   }
 };
 </script>
@@ -22,7 +49,6 @@ export default {
 <style lang="stylus" scoped>
 .alert {
   position: fixed;
-  bottom: 10px;
   transform: translate(0%, -50%);
   width: 100%;
   display: flex;
