@@ -29,7 +29,7 @@ export default {
 
 <style lang="stylus">
 .swipe-enter-active, .swipe-leave-active {
-  transition: all 0.5s ease;
+  transition: all 1s ease;
 }
 
 .swipe-leave-to {

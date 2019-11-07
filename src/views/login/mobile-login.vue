@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-$login-btn-background = #fd4441;
+@import '~@/assets/css/variable.styl';
 
 .mobile-login {
   .header {
@@ -76,8 +76,7 @@ $login-btn-background = #fd4441;
       font-size: 16px;
 
       &:active {
-        background: #eee;
-        border-radius: 50%;
+        active-click();
       }
 
       i {

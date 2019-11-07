@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { clearInterval } from "timers";
 export default {
   name: "Swipe",
   props: {
@@ -33,7 +32,7 @@ export default {
     },
     interval: {
       type: Number,
-      default: 3000
+      default: 5000
     }
   },
   data() {
@@ -93,23 +92,25 @@ export default {
       }
     },
     touchStart(e) {
-      // e.preventDefault(); // 阻止默认事件，滚动等
-      this.startX = e.touches[0].clientX; // 记录滑动开始的位置
+      clearInterval(this.timer);
+      this.timer = null;
+      e.preventDefault();
+      this.startX = e.touches[0].clientX;
     },
     touchEnd(e) {
-      // e.preventDefault(); // 阻止默认事件
-      // 记录结束位置
+      e.preventDefault();
       this.endX = e.changedTouches[0].clientX;
       // 左滑
       if (this.startX - this.endX > 30) {
-        this.left();
+        this.right();
       }
       // 右滑
       if (this.startX - this.endX < -30) {
-        this.right();
+        this.left();
       }
       this.startX = 0;
       this.endX = 0;
+      this.play();
     }
   },
   destroyed() {
@@ -121,8 +122,10 @@ export default {
 
 <style lang="stylus" scoped>
 .swipe {
+  overflow: hidden;
   width: 100%;
   position: relative;
+  border-radius: 10px;
 
   .swipe-container {
     height: 100%;

@@ -42,9 +42,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-$login-background = #db2c1f;
-$login-logo-background = #f22a25;
-$login-color = #ff3a3a;
+@import '~@/assets/css/variable.styl';
 
 .login {
   position: relative;
@@ -91,7 +89,8 @@ $login-color = #ff3a3a;
       margin-bottom: 20px;
 
       &:active {
-        background: #eeeeee;
+        background: $click-active-background;
+        transition: all 0.5s;
       }
     }
 

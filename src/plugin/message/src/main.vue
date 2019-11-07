@@ -59,7 +59,7 @@ export default {
   span {
     background: rgba(0, 0, 0, 0.4);
     color: #ffffff;
-    font-size: 14px;
+    font-size: 12px;
     padding: 4px 10px;
     border-radius: 6px;
     display: block;
