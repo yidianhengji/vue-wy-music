@@ -7,7 +7,9 @@ import "./assets/css/animate.css"
 import "./assets/font/iconfont.css"
 
 import message from "./plugin/message"
+import swipe from "./plugin/swipe"
 Vue.use(message)
+Vue.use(swipe)
 
 Vue.config.productionTip = false
 
