@@ -61,7 +61,11 @@
     <div class="small-player">
       <div class="left">
         <div class="player-bg">
-          <img src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg" alt />
+          <img
+            class="rotation"
+            src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg"
+            alt
+          />
         </div>
         <div class="player-info">
           <h4>世间美好与你换换相扣</h4>
@@ -343,6 +347,24 @@ export default {
           width: 100%;
           height: 100%;
           border-radius: 50%;
+        }
+
+        @keyframes rotation {
+          from {
+            -webkit-transform: rotate(0deg);
+          }
+
+          to {
+            -webkit-transform: rotate(360deg);
+          }
+        }
+
+        .rotation {
+          -webkit-transform: rotate(360deg);
+          animation: rotation 5s linear infinite;
+          -moz-animation: rotation 5s linear infinite;
+          -webkit-animation: rotation 5s linear infinite;
+          -o-animation: rotation 5s linear infinite;
         }
       }
 

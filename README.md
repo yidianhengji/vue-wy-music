@@ -20,3 +20,23 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 技术点
 axios
+
+### css 特效 图片旋转
+@keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.rotation {
+  -webkit-transform: rotate(360deg);
+  animation: rotation 5s linear infinite;
+  -moz-animation: rotation 5s linear infinite;
+  -webkit-animation: rotation 5s linear infinite;
+  -o-animation: rotation 5s linear infinite;
+}
+}
