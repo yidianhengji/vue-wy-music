@@ -62,6 +62,7 @@ export default class Lyric {
   }
 
   _findCurNum (time) {
+    debugger
     for (let i = 0; i < this.lines.length; i++) {
       if (time <= this.lines[i].time) {
         return i

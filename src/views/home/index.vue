@@ -37,6 +37,45 @@
           </li>
         </ul>
       </div>
+      <div class="recommend">
+        <div class="recommend-title">
+          <h3>推荐歌单</h3>
+          <span>歌单广场</span>
+        </div>
+        <ul class="recommend-list">
+          <li v-for="(item,index) in 6" :key="index">
+            <div class="bg">
+              <span>
+                <i class="icon iconfont iconbofangsanjiaoxing"></i>6.3万
+              </span>
+              <img
+                src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg"
+                alt
+              />
+            </div>
+            <p class="details">慢生活· 初冬是适合思念的日子。</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="small-player">
+      <div class="left">
+        <div class="player-bg">
+          <img src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg" alt />
+        </div>
+        <div class="player-info">
+          <h4>世间美好与你换换相扣</h4>
+          <h5>横滑可以切换上下首哦</h5>
+        </div>
+      </div>
+      <div class="right">
+        <span class="player">
+          <i class="icon iconfont iconzanting"></i>
+        </span>
+        <span class="list">
+          <i class="icon iconfont iconliebiao"></i>
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -100,6 +139,7 @@ export default {
     background: #ffffff;
     display: flex;
     align-items: center;
+    z-index: 999;
 
     .header-content {
       position: relative;
@@ -197,6 +237,146 @@ export default {
             color: #3c3c3c;
             font-size: 13px;
           }
+        }
+      }
+    }
+
+    .recommend {
+      border-top: 1px solid #e3e3e3;
+      padding: 15px;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+
+      .recommend-title {
+        h3 {
+          font-size: 20px;
+          font-weight: bold;
+          color: #3f3f3f;
+        }
+
+        span {
+          border: 1px solid #eaeaea;
+          height: 32px;
+          line-height: 32px;
+          border-radius: 16px;
+          padding: 0 14px;
+          color: #363636;
+          font-size: 14px;
+          position: absolute;
+          right: 15px;
+          top: 8px;
+        }
+      }
+
+      .recommend-list {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+
+        li {
+          flex: 0 0 calc(33.3333% - 7px);
+          margin-right: 10px;
+          margin-bottom: 20px;
+
+          &:nth-child(3n+3) {
+            margin-right: 0px;
+          }
+
+          .bg {
+            position: relative;
+            width: 100%;
+
+            img {
+              width: 100%;
+              height: 120px;
+              border-radius: 10px;
+            }
+
+            span {
+              position: absolute;
+              right: 10px;
+              top: 4px;
+              color: #ffffff;
+              font-size: 12px;
+              flex-center();
+            }
+          }
+
+          .details {
+            color: #313131;
+            font-size: 14px;
+            line-height: 18px;
+            margin: 5px 0 0px;
+          }
+        }
+      }
+    }
+  }
+
+  .small-player {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 60px;
+    overflow: hidden;
+    border-top: 1px solid #ebebeb;
+    padding: 0 10px;
+    box-sizing: border-box;
+    background: #ffffff;
+    z-index: 999;
+
+    .left {
+      height: 100%;
+      float: left;
+      display: flex;
+      align-items: center;
+
+      .player-bg {
+        width: 50px;
+        height: 50px;
+        overflow: hidden;
+        margin-right: 10px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+        }
+      }
+
+      .player-info {
+        h4 {
+          color: #353535;
+          font-size: 16px;
+        }
+
+        h5 {
+          margin-top: 6px;
+          color: #808080;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .right {
+      height: 100%;
+      float: right;
+      display: flex;
+      align-items: center;
+
+      .player {
+        i {
+          color: #555555;
+          font-size: 40px;
+        }
+      }
+
+      .list {
+        i {
+          color: #555555;
+          font-size: 40px;
         }
       }
     }

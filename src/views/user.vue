@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div v-if="currentLyric"></div>
 </template>
 
 <script>
@@ -18,7 +18,6 @@ export default {
   methods: {
     getLyric() {
       this.currentLyric = new Lyric(this.lyric, this.handleLyric);
-      
     },
     handleLyric({ lineNum, txt }) {
       debugger;
@@ -26,3 +25,7 @@ export default {
   }
 };
 </script>
+
+<style lang="stylus" scoped>
+@import '~@/assets/css/variable.styl';
+</style>
