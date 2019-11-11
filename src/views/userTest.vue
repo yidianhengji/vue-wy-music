@@ -1,5 +1,20 @@
 <template>
-  <div v-if="currentLyric"></div>
+  <div class="large-player">
+    <div class="background">
+      <img
+        width="100%"
+        height="100%"
+        src="http://p1.music.126.net/KP4T1dHHiH0nYdTI0ublVg==/109951164470734422.jpg?imageView&quality=89"
+      />
+    </div>
+    <div class="top">
+      <div class="back">
+        <i class="icon iconfont icondown-xiangxia1"></i>
+      </div>
+      <h1 class="title">dddddd</h1>
+      <h2 class="subtitle">dddddddddddd</h2>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -28,4 +43,61 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~@/assets/css/variable.styl';
+
+.large-player {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: #222;
+  z-index: 1000;
+
+  .background {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.6;
+    filter: blur(20px);
+  }
+
+  .top {
+    position: relative;
+    margin-bottom: 25px;
+
+    .back {
+      position: absolute;
+      top: 0;
+      left: 6px;
+      z-index: 50;
+
+      i {
+        display: block;
+        padding: 9px;
+        font-size: 22px;
+        color: #fff;
+      }
+    }
+
+    .title {
+      width: 70%;
+      margin: 0 auto;
+      line-height: 40px;
+      text-align: center;
+      no-wrap();
+      font-size: 18px;
+      color: #fff;
+    }
+
+    .subtitle {
+      line-height: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #fff;
+    }
+  }
+}
 </style>

@@ -244,6 +244,13 @@
       "unicode_decimal": 58883
     },
     {
+      "icon_id": "2811102",
+      "name": "向下边框三角",
+      "font_class": "left-trangle",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
       "icon_id": "3092114",
       "name": "排行榜",
       "font_class": "paihangbang",
@@ -307,6 +314,20 @@
       "unicode_decimal": 59261
     },
     {
+      "icon_id": "5095550",
+      "name": "向下边框三角",
+      "font_class": "down-xiangxia1",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "5467296",
+      "name": "向下边框三角",
+      "font_class": "down-trangle-copy-copy",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
       "icon_id": "6540838",
       "name": "列表",
       "font_class": "liebiao",
@@ -347,6 +368,13 @@
       "font_class": "_huabanfuben",
       "unicode": "e62e",
       "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "8767773",
+      "name": "向下边框三角",
+      "font_class": "up-trangle",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
     },
     {
       "icon_id": "8798014",
