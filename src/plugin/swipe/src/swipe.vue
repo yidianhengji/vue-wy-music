@@ -41,7 +41,8 @@ export default {
       len: null,
       timer: null,
       startX: 0,
-      endX: 0
+      endX: 0,
+      direction: "right"
     };
   },
   watch: {
@@ -75,6 +76,7 @@ export default {
         item.select = null;
         if (this.value === item.name) {
           item.select = this.value;
+          item.direction = this.direction;
           this.current = this.value;
         }
       });
@@ -103,10 +105,12 @@ export default {
       // 左滑
       if (this.startX - this.endX > 30) {
         this.right();
+        this.direction = "right";
       }
       // 右滑
       if (this.startX - this.endX < -30) {
         this.left();
+        this.direction = "left";
       }
       this.startX = 0;
       this.endX = 0;

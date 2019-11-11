@@ -69,7 +69,7 @@
 
         img {
           width: 100%;
-          height: 120px;
+          height: 100%;
           border-radius: 10px;
         }
 
@@ -88,6 +88,11 @@
         font-size: 14px;
         line-height: 18px;
         margin: 5px 0 0px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <transition name="swipe" :class="false">
+  <transition :name="isName">
     <div class="swipe-item" v-if="isShow">
       <slot></slot>
     </div>
@@ -11,7 +11,8 @@ export default {
   name: "SwipeItem",
   data() {
     return {
-      select: null
+      select: null,
+      direction: "right"
     };
   },
   props: {
@@ -22,27 +23,30 @@ export default {
   computed: {
     isShow() {
       return this.name === this.select;
+    },
+    isName() {
+      return this.direction == "left" ? "left-swipe" : "right-swipe";
     }
   }
 };
 </script>
 
 <style lang="stylus">
-.swipe-enter-active, .swipe-leave-active {
-  transition: all 1s ease;
+.left-swipe-enter-active, .left-swipe-leave-active, .right-swipe-enter-active, .right-swipe-leave-active {
+  transition: all .5s ease;
 }
 
-.swipe-leave-to {
-  transform: translate(-100%);
-  opacity: 0;
-}
-
-.swipe-enter {
+.left-swipe-leave-to, .right-swipe-enter {
   transform: translate(100%);
   opacity: 0;
 }
 
-.swipe-enter-active {
+.left-swipe-enter, .right-swipe-leave-to {
+  transform: translate(-100%);
+  opacity: 0;
+}
+
+.left-swipe-enter-active, .right-swipe-enter-active {
   position: absolute;
   left: 0px;
   top: 0px;
