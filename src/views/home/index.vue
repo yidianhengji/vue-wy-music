@@ -11,8 +11,8 @@
             :key="index"
             class="header-nav-item"
             :class="defalutActiveCurrent===index ? 'active' : ''"
-            @click="headerNavItem(index)"
-          >{{item}}</li>
+            @click="headerNavItem(index, item.path)"
+          >{{item.name}}</li>
         </ul>
         <div class="header-icon-search">
           <i class="icon iconfont iconsousuo"></i>
@@ -20,6 +20,7 @@
       </div>
     </div>
     <div class="main">
+      <router-view />
       <div class="carousel">
         <Swipe height="180px" v-model="initialIndex" autoplay>
           <SwipeItem v-for="(item,index) in imgArr" :key="index" :name="index">
@@ -81,6 +82,7 @@
         </span>
       </div>
     </div>
+    <div class="large-player">大播放器</div>
   </div>
 </template>
 
@@ -89,7 +91,12 @@ export default {
   data() {
     return {
       defalutActiveCurrent: 1,
-      headerNav: ["我的", "发现", "云村", "视频"],
+      headerNav: [
+        { name: "我的", path: "/user" },
+        { name: "发现", path: "/recommend" },
+        { name: "云村", path: "/cloud" },
+        { name: "视频", path: "/video" }
+      ],
       initialIndex: 0,
       imgArr: [
         {
@@ -120,8 +127,9 @@ export default {
   },
   computed: {},
   methods: {
-    headerNavItem(index) {
+    headerNavItem(index, path) {
       this.defalutActiveCurrent = index;
+      this.$router.push({ path: path });
     }
   }
 };
