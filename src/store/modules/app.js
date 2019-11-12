@@ -1,27 +1,16 @@
 const state = {
-  sidebar: {
-    opened: true
-  },
-  setting: {
-    theme: 1
-  }
+  openedPlayer: false
 };
 
 const mutations = {
-  TOGGLE_SIDEBAR: state => {
-    state.sidebar.opened = !state.sidebar.opened;
-  },
-  CHANGE_THEME: (state, { key, value }) => {
-    state[key] = value;
+  TOGGLE_OPENED_PLAYER: (state, value) => {
+    state["openedPlayer"] = value;
   }
 };
 
 const actions = {
-  toggleSideBar({ commit }) {
-    commit("TOGGLE_SIDEBAR");
-  },
-  changeTheme({ commit }, data) {
-    commit("CHANGE_THEME", data);
+  toggleOpenedPlayer ({ commit }) {
+    commit("TOGGLE_OPENED_PLAYER");
   }
 };
 

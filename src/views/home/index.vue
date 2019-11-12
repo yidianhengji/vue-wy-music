@@ -4,18 +4,26 @@
     <div class="main">
       <router-view />
     </div>
-    <smallPlayer></smallPlayer>
+    <SmallPlayer></SmallPlayer>
+    <LargePlayer v-if="isShow"></LargePlayer>
     <div class="large-player">大播放器</div>
   </div>
 </template>
 
 <script>
 import Header from "./components/header";
-import smallPlayer from "../player/small-player";
+import SmallPlayer from "../player/small-player";
+import LargePlayer from "../player/large-player";
 export default {
   components: {
     Header,
-    smallPlayer
+    SmallPlayer,
+    LargePlayer
+  },
+  data() {
+    return {
+      isShow: false
+    }
   }
 };
 </script>

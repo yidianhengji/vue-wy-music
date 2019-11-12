@@ -1,5 +1,5 @@
 <template>
-  <div class="small-player">
+  <div class="small-player" @click="open">
     <div class="left">
       <div class="player-bg">
         <img
@@ -23,6 +23,22 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters, mapMutations } from "vuex";
+export default {
+  computed: {
+    ...mapGetters({
+      openedPlayer: "openedPlayer"
+    })
+  },
+  methods: {
+    open() {
+      this.$store.dispatch("app/toggleOpenedPlayer", true);
+    }
+  }
+};
+</script>
 
 <style lang="stylus" scoped>
 @import '~@/assets/css/variable.styl';

@@ -1,5 +1,4 @@
 const getters = {
-  sidebar: state => state.app.sidebar,
-  setting: state => state.app.setting
+  openedPlayer: state => state.app.openedPlayer
 };
 export default getters;
