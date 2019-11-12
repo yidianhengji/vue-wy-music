@@ -8,7 +8,7 @@
       />
     </div>
     <div class="top">
-      <div class="back">
+      <div class="back" @click="close">
         <i class="icon iconfont icondown-xiangxia1"></i>
       </div>
       <h1 class="title">dddddd</h1>
@@ -75,6 +75,16 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    close() {
+      this.$store.dispatch("app/toggleOpenedPlayer");
+    }
+  }
+}
+</script>
 
 <style lang="stylus" scoped>
 @import '~@/assets/css/variable.styl';

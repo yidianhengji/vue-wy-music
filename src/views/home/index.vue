@@ -4,9 +4,8 @@
     <div class="main">
       <router-view />
     </div>
-    <SmallPlayer></SmallPlayer>
-    <LargePlayer v-if="isShow"></LargePlayer>
-    <div class="large-player">大播放器</div>
+    <SmallPlayer v-show="!openedPlayer"></SmallPlayer>
+    <LargePlayer v-show="openedPlayer"></LargePlayer>
   </div>
 </template>
 
@@ -14,6 +13,7 @@
 import Header from "./components/header";
 import SmallPlayer from "../player/small-player";
 import LargePlayer from "../player/large-player";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
     Header,
@@ -23,7 +23,12 @@ export default {
   data() {
     return {
       isShow: false
-    }
+    };
+  },
+  computed: {
+    ...mapGetters({
+      openedPlayer: "openedPlayer"
+    })
   }
 };
 </script>

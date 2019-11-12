@@ -25,16 +25,10 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 export default {
-  computed: {
-    ...mapGetters({
-      openedPlayer: "openedPlayer"
-    })
-  },
   methods: {
     open() {
-      this.$store.dispatch("app/toggleOpenedPlayer", true);
+      this.$store.dispatch("app/toggleOpenedPlayer");
     }
   }
 };

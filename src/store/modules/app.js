@@ -3,13 +3,13 @@ const state = {
 };
 
 const mutations = {
-  TOGGLE_OPENED_PLAYER: (state, value) => {
-    state["openedPlayer"] = value;
+  TOGGLE_OPENED_PLAYER: (state) => {
+    state["openedPlayer"] = !state["openedPlayer"];
   }
 };
 
 const actions = {
-  toggleOpenedPlayer ({ commit }) {
+  toggleOpenedPlayer({ commit }) {
     commit("TOGGLE_OPENED_PLAYER");
   }
 };

@@ -10,6 +10,8 @@ import recommend from "@/views/recommend/index.vue"
 import cloud from "@/views/cloud/index.vue"
 import video from "@/views/video/index.vue"
 
+import song from "@/views/song/index.vue"
+
 
 import test from "@/views/userTest.vue"
 
@@ -44,6 +46,11 @@ const routes = [
         component: video
       }
     ]
+  },
+  {
+    path: "/song",
+    name: "song",
+    component: song
   },
   {
     path: "/test",
