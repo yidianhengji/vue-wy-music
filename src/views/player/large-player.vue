@@ -96,7 +96,7 @@ export default {
   width: 100%;
   height: 100%;
   background: #222;
-  z-index: 1000;
+  z-index: 11;
 
   .background {
     position: absolute;

@@ -48,7 +48,7 @@ export default {
   padding: 0 10px;
   box-sizing: border-box;
   background: #ffffff;
-  z-index: 999;
+  z-index: 10;
 
   .left {
     height: 100%;

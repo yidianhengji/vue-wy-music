@@ -5,18 +5,51 @@
       <span>歌单广场</span>
     </div>
     <ul class="recommend-list">
-      <li v-for="(item,index) in 6" :key="index">
+      <li v-for="(item,index) in recommendArr" :key="index" @click="open(item.id)">
         <div class="bg">
           <span>
-            <i class="icon iconfont iconbofangsanjiaoxing"></i>6.3万
+            <i class="icon iconfont iconbofangsanjiaoxing"></i>
+            {{countNumFn(item.playCount)}}
           </span>
-          <img src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg" alt />
+          <img :src="item.picUrl" alt />
         </div>
-        <p class="details">慢生活· 初冬是适合思念的日子。</p>
+        <p class="details">{{item.name}}</p>
       </li>
     </ul>
   </div>
 </template>
+
+<script>
+import { reqPersonalized } from "@/api";
+import { countNum } from "@/utils/common";
+export default {
+  data() {
+    return {
+      recommendArr: []
+    };
+  },
+  mounted() {
+    this.playlist();
+  },
+  methods: {
+    open(id) {
+      this.$router.push({ path: "/song", query: { id } });
+    },
+    playlist: async function() {
+      let values = {
+        limit: 6
+      };
+      const req = await reqPersonalized(values);
+      if (req.data.code == 200) {
+        this.recommendArr = req.data.result;
+      }
+    },
+    countNumFn(num) {
+      return countNum(num);
+    }
+  }
+};
+</script>
 
 <style lang="stylus" scoped>
 @import '~@/assets/css/variable.styl';
@@ -61,6 +94,10 @@
 
       &:nth-child(3n+3) {
         margin-right: 0px;
+      }
+
+      &:nth-child(1n+3) {
+        margin-bottom: 0px;
       }
 
       .bg {

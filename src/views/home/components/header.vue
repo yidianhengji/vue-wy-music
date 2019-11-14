@@ -54,7 +54,7 @@ export default {
   background: #ffffff;
   display: flex;
   align-items: center;
-  z-index: 999;
+  z-index: 9;
 
   .header-content {
     position: relative;

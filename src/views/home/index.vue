@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <Header></Header>
-    <div class="main">
+    <div class="main" :style="mainHeight">
       <router-view />
     </div>
     <SmallPlayer v-show="!openedPlayer"></SmallPlayer>
@@ -28,7 +28,10 @@ export default {
   computed: {
     ...mapGetters({
       openedPlayer: "openedPlayer"
-    })
+    }),
+    mainHeight: function() {
+      return !this.openedPlayer ? "padding-bottom: 60px" : "";
+    }
   }
 };
 </script>

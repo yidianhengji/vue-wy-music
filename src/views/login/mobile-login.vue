@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-login">
     <div class="header">
-      <a href="javascript:0;" @click="back">
+      <a href="javascript:;" @click="back">
         <i class="icon iconfont iconfanhui1"></i>
       </a>
       <h1>手机号登录</h1>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import { reqLogin } from "@/api";
 export default {
   data() {
     return {
@@ -31,14 +31,15 @@ export default {
     };
   },
   methods: {
-    submiBtn() {
-      let str = `?phone=${this.phone}&password=${this.password}`;
-      axios
-        .get("http://localhost:3000/login/cellphone" + str)
-        .then(response => {
-          this.data = response;
-          this.$router.push({ path: "/home" });
-        });
+    submiBtn: async function() {
+      let values = {
+        phone: this.phone,
+        password: this.password
+      };
+      const req = await reqLogin(values);
+      if (req.data.code == 200) {
+        this.$router.push({ path: "/" });
+      }
     },
     back() {
       this.$router.go(-1);
