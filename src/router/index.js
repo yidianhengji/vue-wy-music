@@ -46,7 +46,7 @@ const routes = [
         component: video
       },
       {
-        path: "/song",
+        path: "/song/:id",
         name: "song",
         component: song
       },

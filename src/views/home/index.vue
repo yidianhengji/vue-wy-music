@@ -30,7 +30,9 @@ export default {
       openedPlayer: "openedPlayer"
     }),
     mainHeight: function() {
-      return !this.openedPlayer ? "padding-bottom: 60px" : "";
+      return !this.openedPlayer
+        ? "padding-bottom: 60px; height: calc(100% - 108px);"
+        : "";
     }
   }
 };
@@ -45,6 +47,8 @@ export default {
 
   .main {
     padding-top: 48px;
+    height: calc(100% - 48px);
+    overflow: hidden;
   }
 }
 </style>

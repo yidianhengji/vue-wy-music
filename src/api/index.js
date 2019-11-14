@@ -8,3 +8,6 @@ export const reqBanner = (data) => ajax("banner", data, "GET");
 
 /* 推荐歌单 */
 export const reqPersonalized = (data) => ajax("personalized", data, "GET");
+
+/* 歌单详情 */
+export const reqPlaylistDetail = (data) => ajax("playlist/detail", data, "GET");

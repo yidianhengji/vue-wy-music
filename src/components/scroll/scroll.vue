@@ -7,6 +7,12 @@
 <script>
 import BScroll from "better-scroll";
 export default {
+  props: {
+    click: {
+      type: Boolean,
+      default: true
+    }
+  },
   mounted() {
     setTimeout(() => {
       this._initScroll();
@@ -17,7 +23,9 @@ export default {
       if (!this.$refs.wrapper) {
         return;
       }
-      this.scroll = new BScroll(this.$refs.wrapper);
+      this.scroll = new BScroll(this.$refs.wrapper, {
+        click: this.click
+      });
     }
   }
 };

@@ -20,29 +20,16 @@
 </template>
 
 <script>
-import { reqPersonalized } from "@/api";
 import { countNum } from "@/utils/common";
 export default {
-  data() {
-    return {
-      recommendArr: []
-    };
-  },
-  mounted() {
-    this.playlist();
+  props: {
+    recommendArr: {
+      type: Array
+    }
   },
   methods: {
     open(id) {
-      this.$router.push({ path: "/song", query: { id } });
-    },
-    playlist: async function() {
-      let values = {
-        limit: 6
-      };
-      const req = await reqPersonalized(values);
-      if (req.data.code == 200) {
-        this.recommendArr = req.data.result;
-      }
+      this.$router.push({ path: `/song/${id}` });
     },
     countNumFn(num) {
       return countNum(num);

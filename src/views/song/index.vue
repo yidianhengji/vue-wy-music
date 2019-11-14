@@ -26,7 +26,11 @@
       </div>
       <div class="song-body">
         <div class="bg">
-          <img src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg" alt />
+          <img
+            ref="conf0"
+            src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg"
+            alt
+          />
           <span>
             <i class="icon iconfont iconbofangsanjiaoxing"></i> 6.5亿
           </span>
@@ -40,6 +44,7 @@
         </div>
       </div>
     </div>
+    <canvas ref="canvas" style="width:100%;height:500px"></canvas>
     <div class="song-list">
       <div class="title">
         <div class="text">
@@ -54,7 +59,46 @@
       </div>
       <ul class="body">
         <li>
-          <div class=""></div>
+          <div class="order-num">1</div>
+          <div class="text">
+            <h2>
+              联名带线
+              <span>(sadas)</span>
+            </h2>
+            <p>
+              <span class="red">独家</span>
+              <span class="yellow">SQ</span> 大师大事的
+            </p>
+          </div>
+          <div class="icon-list">
+            <a href="javascript:;">
+              <i class="icon iconfont iconbofangsanjiaoxing"></i>
+            </a>
+            <a href="javascript:;">
+              <i class="icon iconfont icongengduoxiao"></i>
+            </a>
+          </div>
+        </li>
+        <li>
+          <div class="order-num">1</div>
+          <div class="text">
+            <h2>
+              联名带线
+              <span>(sadas)</span>
+            </h2>
+            <p>
+              <span class="red">独家</span>
+              <span class="yellow">SQ</span> 大师大事的
+            </p>
+          </div>
+          <div class="icon-list">
+            <a href="javascript:;">
+              <i class="icon iconfont iconbofangsanjiaoxing"></i>
+            </a>
+            <a href="javascript:;">
+              <i class="icon iconfont icongengduoxiao"></i>
+            </a>
+          </div>
         </li>
       </ul>
     </div>
@@ -62,9 +106,28 @@
 </template>
 
 <script>
+import { reqPlaylistDetail } from "@/api";
 export default {
   data() {
-    return {};
+    return {
+      playlis: [],
+      privileges: []
+    };
+  },
+  mounted() {
+    this.playlistDetail();
+  },
+  methods: {
+    playlistDetail: async function() {
+      let values = {
+        id: this.$route.params.id
+      };
+      const req = await reqPlaylistDetail(values);
+      if (req.data.code == 200) {
+        this.playlis = req.data.playlist;
+        this.privileges = req.data.privileges;
+      }
+    }
   }
 };
 </script>
@@ -77,16 +140,18 @@ export default {
   top: 0px;
   left: 0px;
   bottom: 60px;
-  z-index: 9;
+  z-index: 10;
   background: #fff;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
 
   .song-bg {
     width: 100%;
     background: url('https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg');
     transform-origin: top;
     background-size: cover;
-    padding: 15px 45px 15px;
+    padding: 15px 15px 15px;
     box-sizing: border-box;
 
     .song-head {
@@ -260,6 +325,85 @@ export default {
 
           i {
             font-size: 14px;
+          }
+        }
+      }
+    }
+
+    .body {
+      li {
+        position: relative;
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+
+        .order-num {
+          font-size: 14px;
+          color: #9c9c9c;
+          width: 30px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+        }
+
+        .text {
+          flex: 1;
+          height: 40px;
+          overflow: hidden;
+          padding-right: 10px;
+
+          h2 {
+            color: #363636;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            no-wrap();
+
+            span {
+              color: #a7a7a7;
+            }
+          }
+
+          p {
+            font-size: 12px;
+            color: #828284;
+            no-wrap();
+            display: flex;
+            align-items: center;
+
+            span {
+              padding: 0 2px;
+              border-radius: 2px;
+              margin-right: 4px;
+            }
+
+            .red {
+              border: 1px solid #db525a;
+              color: #db525a;
+            }
+
+            .yellow {
+              border: 1px solid #df7c39;
+              color: #df7c39;
+            }
+          }
+        }
+
+        .icon-list {
+          width: 60px;
+          height: 40px;
+          display: flex;
+
+          a {
+            width: 30px;
+            display: block;
+            height: 100%;
+            flex-center();
+            color: #b8b8b8;
+
+            i {
+              font-size: 24px;
+            }
           }
         }
       }
