@@ -1,29 +1,29 @@
 <template>
   <div class="song">
-    <div class="song-bg">
-      <div class="song-head">
-        <div class="icon-back">
-          <a href="javascript:;">
-            <i class="icon iconfont iconfanhui1"></i>
-          </a>
-        </div>
-        <div class="text">
-          <div>
-            <h3>歌单</h3>
-            <p>编辑推荐：优质华语新歌，网易云音乐每周二精选</p>
-          </div>
-        </div>
-        <div class="icon-search">
-          <a href="javascript:;">
-            <i class="icon iconfont iconsousuo"></i>
-          </a>
-        </div>
-        <div class="icon-more">
-          <a href="javascript:;">
-            <i class="icon iconfont icongengduoxiao"></i>
-          </a>
+    <div class="song-head">
+      <div class="icon-back">
+        <a href="javascript:;">
+          <i class="icon iconfont iconfanhui1"></i>
+        </a>
+      </div>
+      <div class="text">
+        <div>
+          <h3>歌单</h3>
+          <p>编辑推荐：优质华语新歌，网易云音乐每周二精选</p>
         </div>
       </div>
+      <div class="icon-search">
+        <a href="javascript:;">
+          <i class="icon iconfont iconsousuo"></i>
+        </a>
+      </div>
+      <div class="icon-more">
+        <a href="javascript:;">
+          <i class="icon iconfont icongengduoxiao"></i>
+        </a>
+      </div>
+    </div>
+    <div class="song-bg" ref="bgImage">
       <div class="song-body">
         <div class="bg">
           <img
@@ -44,8 +44,7 @@
         </div>
       </div>
     </div>
-    <canvas ref="canvas" style="width:100%;height:500px"></canvas>
-    <div class="song-list">
+    <div class="song-list" ref="list">
       <div class="title">
         <div class="text">
           <i class="icon iconfont iconzanting"></i> 播放全部
@@ -57,64 +56,73 @@
           </a>
         </div>
       </div>
-      <ul class="body">
-        <li>
-          <div class="order-num">1</div>
-          <div class="text">
-            <h2>
-              联名带线
-              <span>(sadas)</span>
-            </h2>
-            <p>
-              <span class="red">独家</span>
-              <span class="yellow">SQ</span> 大师大事的
-            </p>
-          </div>
-          <div class="icon-list">
-            <a href="javascript:;">
-              <i class="icon iconfont iconbofangsanjiaoxing"></i>
-            </a>
-            <a href="javascript:;">
-              <i class="icon iconfont icongengduoxiao"></i>
-            </a>
-          </div>
-        </li>
-        <li>
-          <div class="order-num">1</div>
-          <div class="text">
-            <h2>
-              联名带线
-              <span>(sadas)</span>
-            </h2>
-            <p>
-              <span class="red">独家</span>
-              <span class="yellow">SQ</span> 大师大事的
-            </p>
-          </div>
-          <div class="icon-list">
-            <a href="javascript:;">
-              <i class="icon iconfont iconbofangsanjiaoxing"></i>
-            </a>
-            <a href="javascript:;">
-              <i class="icon iconfont icongengduoxiao"></i>
-            </a>
-          </div>
-        </li>
-      </ul>
+      <Scroll class="body-height">
+        <ul class="body">
+          <li>
+            <div class="order-num">1</div>
+            <div class="text">
+              <h2>
+                联名带线
+                <span>(sadas)</span>
+              </h2>
+              <p>
+                <span class="red">独家</span>
+                <span class="yellow">SQ</span> 大师大事的
+              </p>
+            </div>
+            <div class="icon-list">
+              <a href="javascript:;">
+                <i class="icon iconfont iconbofangsanjiaoxing"></i>
+              </a>
+              <a href="javascript:;">
+                <i class="icon iconfont icongengduoxiao"></i>
+              </a>
+            </div>
+          </li>
+          <li v-for="(item, index) in 10" :key="index">
+            <div class="order-num">1</div>
+            <div class="text">
+              <h2>
+                联名带线
+                <span>(sadas)</span>
+              </h2>
+              <p>
+                <span class="red">独家</span>
+                <span class="yellow">SQ</span> 大师大事的
+              </p>
+            </div>
+            <div class="icon-list">
+              <a href="javascript:;">
+                <i class="icon iconfont iconbofangsanjiaoxing"></i>
+              </a>
+              <a href="javascript:;">
+                <i class="icon iconfont icongengduoxiao"></i>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </Scroll>
     </div>
   </div>
 </template>
 
 <script>
 import { reqPlaylistDetail } from "@/api";
+import Scroll from "@/components/scroll/scroll";
 export default {
+  components: {
+    Scroll
+  },
   data() {
     return {
       playlis: [],
-      privileges: []
+      privileges: [],
+      scrollY: 0
     };
   },
   mounted() {
+    this.imageHeight = this.$refs.bgImage.clientHeight;
+    this.$refs.list.style.top = `${this.imageHeight - 20}px`;
     this.playlistDetail();
   },
   methods: {
@@ -143,78 +151,80 @@ export default {
   z-index: 10;
   background: #fff;
   width: 100%;
-  height: 100%;
   overflow: hidden;
+
+  .song-head {
+    position: fixed;
+    left: 15px;
+    right: 15px;
+    top: 10px;
+
+    .icon-back, .icon-search, .icon-more {
+      position: absolute;
+      top: 0px;
+      width: 40px;
+      height: 40px;
+      flex-center();
+
+      a {
+        i {
+          font-size: 32px;
+          color: #ffffff;
+        }
+      }
+    }
+
+    .icon-back {
+      left: 0px;
+    }
+
+    .icon-search {
+      right: 40px;
+    }
+
+    .icon-more {
+      right: 0px;
+    }
+
+    .text {
+      padding: 0 90px 0 50px;
+      box-sizing: border-box;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      no-wrap();
+      width: 100%;
+
+      div {
+        width: 100%;
+
+        h3 {
+          font-size: 18px;
+          color: #ffffff;
+          margin-bottom: 5px;
+        }
+
+        p {
+          font-size: 12px;
+          color: #eee;
+          no-wrap();
+        }
+      }
+    }
+  }
 
   .song-bg {
     width: 100%;
     background: url('https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg');
     transform-origin: top;
     background-size: cover;
-    padding: 15px 15px 15px;
+    padding: 15px 15px 35px;
     box-sizing: border-box;
-
-    .song-head {
-      position: relative;
-
-      .icon-back, .icon-search, .icon-more {
-        position: absolute;
-        top: 0px;
-        width: 40px;
-        height: 40px;
-        flex-center();
-
-        a {
-          i {
-            font-size: 32px;
-            color: #ffffff;
-          }
-        }
-      }
-
-      .icon-back {
-        left: 0px;
-      }
-
-      .icon-search {
-        right: 40px;
-      }
-
-      .icon-more {
-        right: 0px;
-      }
-
-      .text {
-        padding: 0 90px 0 50px;
-        box-sizing: border-box;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        no-wrap();
-        width: 100%;
-
-        div {
-          width: 100%;
-
-          h3 {
-            font-size: 18px;
-            color: #ffffff;
-            margin-bottom: 5px;
-          }
-
-          p {
-            font-size: 12px;
-            color: #eee;
-            no-wrap();
-          }
-        }
-      }
-    }
 
     .song-body {
       display: flex;
       position: relative;
-      margin-top: 20px;
+      margin-top: 50px;
       height: 100%;
 
       .bg {
@@ -278,13 +288,12 @@ export default {
   .song-list {
     background: #ffffff;
     border-radius: 20px;
-    position: absolute;
-    top: 220px;
-    left: 0px;
     width: 100%;
-    height: 200px;
     padding: 10px 15px 20px;
     box-sizing: border-box;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
 
     .title {
       overflow: hidden;
@@ -330,79 +339,84 @@ export default {
       }
     }
 
-    .body {
-      li {
-        position: relative;
-        display: flex;
-        align-items: center;
-        padding: 10px 0;
+    .body-height {
+      height: calc(100% - 40px);
+      overflow: hidden;
 
-        .order-num {
-          font-size: 14px;
-          color: #9c9c9c;
-          width: 30px;
-          height: 40px;
+      .body {
+        li {
+          position: relative;
           display: flex;
           align-items: center;
-        }
+          padding: 10px 0;
 
-        .text {
-          flex: 1;
-          height: 40px;
-          overflow: hidden;
-          padding-right: 10px;
-
-          h2 {
-            color: #363636;
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 6px;
-            no-wrap();
-
-            span {
-              color: #a7a7a7;
-            }
-          }
-
-          p {
-            font-size: 12px;
-            color: #828284;
-            no-wrap();
+          .order-num {
+            font-size: 14px;
+            color: #9c9c9c;
+            width: 30px;
+            height: 40px;
             display: flex;
             align-items: center;
+          }
 
-            span {
-              padding: 0 2px;
-              border-radius: 2px;
-              margin-right: 4px;
+          .text {
+            flex: 1;
+            height: 40px;
+            overflow: hidden;
+            padding-right: 10px;
+
+            h2 {
+              color: #363636;
+              font-size: 16px;
+              font-weight: 500;
+              margin-bottom: 6px;
+              no-wrap();
+
+              span {
+                color: #a7a7a7;
+              }
             }
 
-            .red {
-              border: 1px solid #db525a;
-              color: #db525a;
-            }
+            p {
+              font-size: 12px;
+              color: #828284;
+              no-wrap();
+              display: flex;
+              align-items: center;
 
-            .yellow {
-              border: 1px solid #df7c39;
-              color: #df7c39;
+              span {
+                padding: 0 2px;
+                border-radius: 2px;
+                margin-right: 4px;
+              }
+
+              .red {
+                border: 1px solid #db525a;
+                color: #db525a;
+              }
+
+              .yellow {
+                border: 1px solid #df7c39;
+                color: #df7c39;
+              }
             }
           }
-        }
 
-        .icon-list {
-          width: 60px;
-          height: 40px;
-          display: flex;
+          .icon-list {
+            width: 60px;
+            height: 40px;
+            display: flex;
 
-          a {
-            width: 30px;
-            display: block;
-            height: 100%;
-            flex-center();
-            color: #b8b8b8;
+            a {
+              width: 30px;
+              display: block;
+              height: 100%;
+              flex-center();
+              color: #b8b8b8;
 
-            i {
-              font-size: 24px;
+              i {
+                font-size: 24px;
+              }
             }
           }
         }

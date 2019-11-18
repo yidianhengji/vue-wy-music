@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const BASE = 'http://musicapi.leanapp.cn/'
-const BASE = 'http://192.168.199.206:3000/'
+const BASE = 'http://localhost:3000/'
 
 export default function axja (url, data = {}, method = 'GET') {
   return new Promise((resolve, reject) => {
