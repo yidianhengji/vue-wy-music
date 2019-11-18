@@ -1,27 +1,20 @@
 <template>
-  <div class="large-player">
+  <div class="large-player" v-if="song">
     <div class="background">
-      <img
-        width="100%"
-        height="100%"
-        src="http://p1.music.126.net/KP4T1dHHiH0nYdTI0ublVg==/109951164470734422.jpg?imageView&quality=89"
-      />
+      <img width="100%" height="100%" :src="song.picUrl" />
     </div>
     <div class="top">
       <div class="back" @click="close">
         <i class="icon iconfont icondown-xiangxia1"></i>
       </div>
-      <h1 class="title">dddddd</h1>
-      <h2 class="subtitle">dddddddddddd</h2>
+      <h1 class="title">{{song.name}}</h1>
+      <h2 class="subtitle">{{song.author}}</h2>
     </div>
     <div class="middle">
       <div class="middle-l" ref="middleL">
         <div class="cd-wrapper" ref="cdWrapper">
           <div class="cd" ref="imageWrapper">
-            <img
-              class="image"
-              src="http://p1.music.126.net/KP4T1dHHiH0nYdTI0ublVg==/109951164470734422.jpg?imageView&quality=89"
-            />
+            <img class="image rotation" :src="song.picUrl" />
           </div>
         </div>
         <div class="playing-lyric-wrapper">
@@ -73,17 +66,47 @@
         </div>
       </div>
     </div>
+    <audio ref="audio" :autoplay="autoplay" controls="controls"></audio>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
 export default {
+  data() {
+    return {
+      autoplay: false, //是否播放
+      isPlay: true
+    };
+  },
+  computed: {
+    ...mapGetters({
+      song: "song",
+      openedPlayer: "openedPlayer"
+    })
+  },
+  mounted() {
+    if (this.openedPlayer) {
+      this.play();
+    }
+  },
   methods: {
     close() {
       this.$store.dispatch("app/toggleOpenedPlayer");
+    },
+    play() {
+      this.$nextTick(() => {
+        this.$refs.audio.src = this.song.url;
+        this.autoplay = true;
+      });
+    }
+  },
+  watch: {
+    song: function() {
+      this.play();
     }
   }
-}
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -183,6 +206,24 @@ export default {
             box-sizing: border-box;
             border-radius: 50%;
             border: 10px solid rgba(255, 255, 255, 0.1);
+          }
+
+          @keyframes rotation {
+            from {
+              -webkit-transform: rotate(0deg);
+            }
+
+            to {
+              -webkit-transform: rotate(360deg);
+            }
+          }
+
+          .rotation {
+            -webkit-transform: rotate(360deg);
+            animation: rotation 15s linear infinite;
+            -moz-animation: rotation 15s linear infinite;
+            -webkit-animation: rotation 15s linear infinite;
+            -o-animation: rotation 15s linear infinite;
           }
 
           .play {

@@ -21,6 +21,7 @@
 
 <script>
 import { countNum } from "@/utils/common";
+import { reqPlaylistDetail } from "@/api";
 export default {
   props: {
     recommendArr: {
@@ -28,8 +29,15 @@ export default {
     }
   },
   methods: {
-    open(id) {
-      this.$router.push({ path: `/song/${id}` });
+    open: async function(id) {
+      let values = { id };
+      const req = await reqPlaylistDetail(values);
+      if (req.data.code == 200) {
+        this.playlis = req.data.playlist;
+        this.privileges = req.data.privileges;
+        this.$store.dispatch("app/playlistData", this.playlis);
+        this.$router.push({ path: `/song/${id}` });
+      }
     },
     countNumFn(num) {
       return countNum(num);

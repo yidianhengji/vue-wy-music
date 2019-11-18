@@ -2,7 +2,7 @@
   <div class="song">
     <div class="song-head">
       <div class="icon-back">
-        <a href="javascript:;">
+        <a href="javascript:;" @click="back">
           <i class="icon iconfont iconfanhui1"></i>
         </a>
       </div>
@@ -23,24 +23,21 @@
         </a>
       </div>
     </div>
-    <div class="song-bg" ref="bgImage">
+    <div class="song-bg" ref="bgImage" v-if="playlist">
       <div class="song-body">
         <div class="bg">
-          <img
-            ref="conf0"
-            src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg"
-            alt
-          />
+          <img ref="conf0" :src="playlist.coverImgUrl" alt />
           <span>
             <i class="icon iconfont iconbofangsanjiaoxing"></i> 6.5亿
           </span>
         </div>
         <div class="text">
-          <h2>华语速爆新歌最新华语音乐推荐</h2>
+          <h2>{{playlist.name}}</h2>
           <div>
-            <img src="https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg" alt /> 网易云音乐
+            <img :src="playlist.creator.avatarUrl" alt />
+            {{playlist.creator.nickname}}
           </div>
-          <p>编辑推荐：优质华语新歌，网易云音乐每周二精选</p>
+          <p v-html="playlist.description"></p>
         </div>
       </div>
     </div>
@@ -48,7 +45,7 @@
       <div class="title">
         <div class="text">
           <i class="icon iconfont iconzanting"></i> 播放全部
-          <span>(共20首)</span>
+          <span>(共{{playlist.tracks.length}}首)</span>
         </div>
         <div class="btn-collect">
           <a href="javascript:;">
@@ -56,39 +53,24 @@
           </a>
         </div>
       </div>
-      <Scroll class="body-height">
+      <Scroll
+        class="body-height"
+        @scroll="scroll"
+        :before-scroll="beforeScroll"
+        :listen-scroll="listenScroll"
+      >
         <ul class="body">
-          <li>
-            <div class="order-num">1</div>
+          <li v-for="(item,index) in playlist.tracks" :key="index" @click="open(index)">
+            <div class="order-num">{{index+1}}</div>
             <div class="text">
               <h2>
-                联名带线
-                <span>(sadas)</span>
+                {{item.name}}
+                <!-- <span>{{item.ar[0].name}}</span> -->
               </h2>
               <p>
-                <span class="red">独家</span>
-                <span class="yellow">SQ</span> 大师大事的
-              </p>
-            </div>
-            <div class="icon-list">
-              <a href="javascript:;">
-                <i class="icon iconfont iconbofangsanjiaoxing"></i>
-              </a>
-              <a href="javascript:;">
-                <i class="icon iconfont icongengduoxiao"></i>
-              </a>
-            </div>
-          </li>
-          <li v-for="(item, index) in 10" :key="index">
-            <div class="order-num">1</div>
-            <div class="text">
-              <h2>
-                联名带线
-                <span>(sadas)</span>
-              </h2>
-              <p>
-                <span class="red">独家</span>
-                <span class="yellow">SQ</span> 大师大事的
+                <!-- <span class="red">独家</span>
+                <span class="yellow">SQ</span>-->
+                {{item.ar[0].name}}-{{item.al.name}}
               </p>
             </div>
             <div class="icon-list">
@@ -107,34 +89,59 @@
 </template>
 
 <script>
-import { reqPlaylistDetail } from "@/api";
 import Scroll from "@/components/scroll/scroll";
+import { mapGetters, mapMutations } from "vuex";
+import { reqSongUrl } from "@/api";
 export default {
   components: {
     Scroll
   },
   data() {
     return {
-      playlis: [],
-      privileges: [],
-      scrollY: 0
+      beforeScroll: true,
+      listenScroll: true
     };
   },
+  computed: {
+    ...mapGetters({
+      playlist: "playlist"
+    })
+  },
   mounted() {
+    if (!this.playlist) {
+      this.$router.push({ path: `/` });
+    }
     this.imageHeight = this.$refs.bgImage.clientHeight;
     this.$refs.list.style.top = `${this.imageHeight - 20}px`;
-    this.playlistDetail();
   },
   methods: {
-    playlistDetail: async function() {
-      let values = {
-        id: this.$route.params.id
-      };
-      const req = await reqPlaylistDetail(values);
+    back() {
+      this.$router.go(-1);
+    },
+    scroll(pos) {
+      console.log(pos);
+    },
+    open: async function(index) {
+      let id = this.playlist.trackIds[index].id;
+      let desc = this.playlist.tracks[index];
+      let values = { id };
+      const req = await reqSongUrl(values);
       if (req.data.code == 200) {
-        this.playlis = req.data.playlist;
-        this.privileges = req.data.privileges;
+        let data = {
+          id: id,
+          url: req.data.data[0].url,
+          name: desc.name,
+          picUrl: desc.al.picUrl,
+          author: desc.ar[0].name + "-" + desc.al.name
+        };
+        this.$store.dispatch("app/songData", data);
+        this.$store.dispatch("app/toggleOpenedPlayer");
       }
+    }
+  },
+  watch: {
+    playlist() {
+      this.$router.push({ path: `/` });
     }
   }
 };
@@ -216,6 +223,7 @@ export default {
   .song-bg {
     width: 100%;
     background: url('https://p1.music.126.net/Y6Pxw7CWa4vnsEYNm8jWww==/109951164446788933.jpg');
+    background: rgba(0, 0, 0, 0.2);
     transform-origin: top;
     background-size: cover;
     padding: 15px 15px 35px;
@@ -280,6 +288,11 @@ export default {
           font-size: 12px;
           line-height: 16px;
           color: #eee;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
       }
     }
@@ -289,7 +302,7 @@ export default {
     background: #ffffff;
     border-radius: 20px;
     width: 100%;
-    padding: 10px 15px 20px;
+    padding: 10px 15px 0px;
     box-sizing: border-box;
     position: absolute;
     left: 0px;
@@ -367,7 +380,7 @@ export default {
 
             h2 {
               color: #363636;
-              font-size: 16px;
+              font-size: 15px;
               font-weight: 500;
               margin-bottom: 6px;
               no-wrap();
