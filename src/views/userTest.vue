@@ -1,39 +1,16 @@
 <template>
-  <div class="large-player" v-if="currentLyric && currentLyric.lines.length>0">
-    <Scroll ref="sidebar" style="height: 100%;">
-      <ul>
-        <li v-for="(item,index) in currentLyric.lines" :key="index">{{item.txt}}</li>
-      </ul>
-    </Scroll>
+  <div class="large-player">
+    <g-button>默认按钮</g-button>
+    <g-button type="primary">主要按钮</g-button>
+    <g-button type="success">成功按钮</g-button>
+    <g-button type="info">信息按钮</g-button>
+    <g-button type="warning">警告按钮</g-button>
+    <g-button type="danger">危险按钮</g-button>
   </div>
 </template>
 
 <script>
-import Lyric from "@/utils/lyric-parser";
-import Scroll from "@/components/scroll/scroll";
-export default {
-  components: {
-    Scroll
-  },
-  data() {
-    return {
-      currentLyric: null,
-      lyric:
-        "[by:_小浊_]↵[ti:儿时]↵[ar:刘昊霖]↵[al:儿时]↵[00:00.000] 作曲 : 刘昊霖↵[00:01.000] 作词 : 唐映枫↵[00:16.54]铁道旁赤脚追晚霞↵[00:20.96]玻璃珠铁盒英雄卡↵[00:25.48]玩皮筋迷藏石桥下↵[00:30.06]姥姥又纳鞋坐院坝↵[00:34.41]铁门前篮框银杏花↵[00:38.94]茅草屋可有住人家↵[00:43.46]放学路打闹嘻嘻哈↵[00:47.98]田埂间流水哗啦啦↵[00:52.60]我们就一天天长大↵[00:57.03]甜梦中大白兔黏牙↵[01:01.55]也幻想神仙科学家↵[01:06.11]白墙上泥渍简笔画↵[01:10.44]我们就一天天长大↵[01:15.07]四季过老梧桐发芽↵[01:19.59]沙堆里有宝藏和塔↵[01:24.07]长板凳搭起一个家↵[01:46.75]日子总慢得不像话↵[01:51.18]叶落满池塘搬新家↵[01:55.80]二十寸彩电皮沙发↵[02:00.23]五点半大风车动画↵[02:04.71]晚饭后纳凉星夜下↵[02:09.19]萤火虫微风弯月牙↵[02:13.61]大人聊听不懂的话↵[02:18.29]鬼怪都躲在床底下↵[02:22.62]我们就一天天长大↵[02:27.13]记忆里有雨不停下↵[02:31.67]蝉鸣中闷完了暑假↵[02:36.13]新学年又该剪头发↵[02:40.61]我们就一天天长大↵[02:45.08]也开始憧憬和变化↵[02:49.61]曾以为自己多伟大↵[02:54.19]写了诗不敢递给她↵[02:58.56]我们就一天天长大↵[03:03.08]听磁带偶遇榕树下↵[03:07.70]白衬衫黄昏木吉他↵[03:12.33]年少不经事的脸颊↵[03:17.35]呼~呜呼呜~↵[03:53.68]还以为自己多伟大↵[03:58.14]写了诗不敢递给她↵[04:07.39]小小诗不敢递给她↵"
-    };
-  },
-  mounted() {
-    // this.getLyric();
-  },
-  methods: {
-    getLyric() {
-      this.currentLyric = new Lyric(this.lyric, this.handleLyric);
-    },
-    handleLyric({ lineNum, txt }) {
-      debugger;
-    }
-  }
-};
+export default {};
 </script>
 
 <style lang="stylus" scoped>
@@ -45,7 +22,10 @@ export default {
   top: 0px;
   width: 100%;
   height: 100%;
-  background: #222;
   z-index: 1000;
+
+  .g-button+.g-button {
+    margin-left: 10px;
+  }
 }
 </style>

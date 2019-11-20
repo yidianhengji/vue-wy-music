@@ -55,7 +55,7 @@
         <div class="icon i-left">
           <i class="icon iconfont iconicon-test3"></i>
         </div>
-        <div class="icon i-center">
+        <div class="icon i-center" @click="playAndSuspend">
           <i class="icon iconfont iconicon-test4"></i>
         </div>
         <div class="icon i-right">
@@ -91,6 +91,10 @@ export default {
     }
   },
   methods: {
+    // 播放和暂停按钮
+    playAndSuspend() {
+      this.isPlay = !this.isPlay;
+    },
     close() {
       this.$store.dispatch("app/toggleOpenedPlayer");
     },
