@@ -23,13 +23,8 @@ export default {
     };
   },
   mounted() {
-    this.getLyric();
+    // this.getLyric();
   },
-  // computed: {
-  //   ...mapGetters({
-  //     sidebar: "sidebar"
-  //   })
-  // },
   methods: {
     getLyric() {
       this.currentLyric = new Lyric(this.lyric, this.handleLyric);
@@ -52,6 +47,5 @@ export default {
   height: 100%;
   background: #222;
   z-index: 1000;
-
 }
 </style>
