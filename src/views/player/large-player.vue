@@ -14,7 +14,7 @@
       <div class="middle-l" ref="middleL">
         <div class="cd-wrapper" ref="cdWrapper">
           <div class="cd" ref="imageWrapper">
-            <img class="image rotation" :src="song.picUrl" />
+            <img class="image" :class="isPlay ? 'rotation' : ''" :src="song.picUrl" />
           </div>
         </div>
         <div class="playing-lyric-wrapper">
@@ -35,7 +35,7 @@
         <span class="dot"></span>
       </div>
       <div class="progress-wrapper">
-        <span class="time time-l">12</span>
+        <span class="time time-l">{{this.currentTime}}</span>
         <div class="progress-bar-wrapper">
           <div class="progress-bar">
             <div class="bar-inner">
@@ -46,19 +46,19 @@
             </div>
           </div>
         </div>
-        <span class="time time-r">12</span>
+        <span class="time time-r">{{this.duration}}</span>
       </div>
       <div class="operators">
         <div class="icon i-left">
-          <i class="icon iconfont iconicon-test9"></i>
+          <i class="icon iconfont iconicon-test9" @click="modeBtn"></i>
         </div>
-        <div class="icon i-left">
+        <div class="icon i-left" @click="prev">
           <i class="icon iconfont iconicon-test3"></i>
         </div>
         <div class="icon i-center" @click="playAndSuspend">
-          <i class="icon iconfont iconicon-test4"></i>
+          <i class="icon iconfont" :class="isPlayClass"></i>
         </div>
-        <div class="icon i-right">
+        <div class="icon i-right" @click="next">
           <i class="icon iconfont iconicon-test7"></i>
         </div>
         <div class="icon i-right">
@@ -66,23 +66,32 @@
         </div>
       </div>
     </div>
-    <audio ref="audio" :autoplay="autoplay" controls="controls"></audio>
+    <audio ref="audio" :autoplay="autoplay" controls="controls" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import { reqSongUrl } from "@/api";
+import { secondTime } from "@/utils/common";
 export default {
   data() {
     return {
       autoplay: false, //是否播放
-      isPlay: true
+      isPlay: true,
+      current: 0,
+      duration: 0,
+      currentTime: 0
     };
   },
   computed: {
+    isPlayClass: function() {
+      return !this.isPlay ? "iconicon-test2" : "iconicon-test1";
+    },
     ...mapGetters({
       song: "song",
-      openedPlayer: "openedPlayer"
+      openedPlayer: "openedPlayer",
+      currentIndex: "currentIndex"
     })
   },
   mounted() {
@@ -94,15 +103,52 @@ export default {
     // 播放和暂停按钮
     playAndSuspend() {
       this.isPlay = !this.isPlay;
+      if (this.isPlay) {
+        this.$refs.audio.play();
+      } else {
+        this.$refs.audio.pause();
+      }
     },
+    // 上一首
+    prev() {
+      if (this.current > 0) {
+        this.current--;
+      } else {
+        this.current = this.song.order.length;
+      }
+      this.$store.dispatch("app/currentIndexData", this.current);
+    },
+    // 下一首
+    next() {
+      if (this.current <= this.song.order.length - 1) {
+        this.current++;
+      } else {
+        this.current = 0;
+      }
+      this.$store.dispatch("app/currentIndexData", this.current);
+    },
+    // 播放模式
+    modeBtn() {
+
+    },
+    // 返回按钮
     close() {
       this.$store.dispatch("app/toggleOpenedPlayer");
     },
-    play() {
-      this.$nextTick(() => {
-        this.$refs.audio.src = this.song.url;
+    play: async function() {
+      let values = { id: this.song.id };
+      const req = await reqSongUrl(values);
+      if (req.data.code == 200) {
+        this.current = this.currentIndex;
+        this.$refs.audio.src = req.data.data[0].url;
         this.autoplay = true;
-      });
+        this.$refs.audio.oncanplay = () => {
+          this.duration = secondTime(this.$refs.audio.duration);
+        };
+      }
+    },
+    updateTime(e) {
+      this.currentTime = secondTime(e.target.currentTime);
     }
   },
   watch: {

@@ -1,7 +1,8 @@
 const state = {
   openedPlayer: false,
   playlist: null,
-  song: null
+  song: null,
+  currentIndex: 0
 };
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
   },
   SONG_DATA: (state, value) => {
     state["song"] = value
+  },
+  CURRENT_INDEX: (state, value) => {
+    state["currentIndex"] = value
   }
 };
 
@@ -25,6 +29,9 @@ const actions = {
   },
   songData({ commit }, data) {
     commit("SONG_DATA", data);
+  },
+  currentIndexData({ commit }, data) {
+    commit("CURRENT_INDEX", data);
   }
 };
 

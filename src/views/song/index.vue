@@ -1,5 +1,5 @@
 <template>
-  <div class="song">
+  <div class="song" v-if="playlist">
     <div class="song-head">
       <div class="icon-back">
         <a href="javascript:;" @click="back">
@@ -23,7 +23,7 @@
         </a>
       </div>
     </div>
-    <div class="song-bg" ref="bgImage" v-if="playlist">
+    <div class="song-bg" ref="bgImage">
       <div class="song-body">
         <div class="bg">
           <img ref="conf0" :src="playlist.coverImgUrl" alt />
@@ -91,7 +91,6 @@
 <script>
 import Scroll from "@/components/scroll/scroll";
 import { mapGetters, mapMutations } from "vuex";
-import { reqSongUrl } from "@/api";
 export default {
   components: {
     Scroll
@@ -99,7 +98,9 @@ export default {
   data() {
     return {
       beforeScroll: true,
-      listenScroll: true
+      listenScroll: true,
+      random: [],
+      order: []
     };
   },
   computed: {
@@ -111,8 +112,18 @@ export default {
     if (!this.playlist) {
       this.$router.push({ path: `/` });
     }
-    this.imageHeight = this.$refs.bgImage.clientHeight;
-    this.$refs.list.style.top = `${this.imageHeight - 20}px`;
+    if (this.playlist) {
+      this.imageHeight = this.$refs.bgImage.clientHeight;
+      this.$refs.list.style.top = `${this.imageHeight - 20}px`;
+      this.playlist.tracks.map((item, index) => {
+        let obj = {};
+        obj.id = this.playlist.trackIds[index].id;
+        obj.name = item.name;
+        obj.picUrl = item.al.picUrl;
+        obj.author = item.ar[0].name + "-" + item.al.name;
+        this.order.push(obj);
+      });
+    }
   },
   methods: {
     back() {
@@ -121,22 +132,22 @@ export default {
     scroll(pos) {
       console.log(pos);
     },
-    open: async function(index) {
+    open(index) {
       let id = this.playlist.trackIds[index].id;
       let desc = this.playlist.tracks[index];
-      let values = { id };
-      const req = await reqSongUrl(values);
-      if (req.data.code == 200) {
-        let data = {
-          id: id,
-          url: req.data.data[0].url,
-          name: desc.name,
-          picUrl: desc.al.picUrl,
-          author: desc.ar[0].name + "-" + desc.al.name
-        };
-        this.$store.dispatch("app/songData", data);
-        this.$store.dispatch("app/toggleOpenedPlayer");
-      }
+      let arr = [];
+
+      let data = {
+        id: id,
+        name: desc.name,
+        picUrl: desc.al.picUrl,
+        author: desc.ar[0].name + "-" + desc.al.name,
+        random: [],
+        order: this.order
+      };
+      this.$store.dispatch("app/songData", data);
+      this.$store.dispatch("app/toggleOpenedPlayer");
+      this.$store.dispatch("app/currentIndexData", index);
     }
   },
   watch: {
