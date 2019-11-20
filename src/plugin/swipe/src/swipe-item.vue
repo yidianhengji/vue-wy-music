@@ -33,7 +33,7 @@ export default {
 
 <style lang="stylus">
 .left-swipe-enter-active, .left-swipe-leave-active, .right-swipe-enter-active, .right-swipe-leave-active {
-  transition: all .5s ease;
+  transition: all 0.5s ease;
 }
 
 .left-swipe-leave-to, .right-swipe-enter {
@@ -44,12 +44,14 @@ export default {
 .left-swipe-enter, .right-swipe-leave-to {
   transform: translate(-100%);
   opacity: 0;
+  z-index: 998;
 }
 
 .left-swipe-enter-active, .right-swipe-enter-active {
   position: absolute;
   left: 0px;
   top: 0px;
+  z-index: 999;
 }
 
 .swipe-item {
