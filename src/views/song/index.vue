@@ -1,91 +1,93 @@
 <template>
-  <div class="song" v-if="playlist">
-    <div class="song-head">
-      <div class="icon-back">
-        <a href="javascript:;" @click="back">
-          <i class="icon iconfont iconfanhui1"></i>
-        </a>
-      </div>
-      <div class="text">
-        <div>
-          <h3>歌单</h3>
-          <p>编辑推荐：优质华语新歌，网易云音乐每周二精选</p>
-        </div>
-      </div>
-      <div class="icon-search">
-        <a href="javascript:;">
-          <i class="icon iconfont iconsousuo"></i>
-        </a>
-      </div>
-      <div class="icon-more">
-        <a href="javascript:;">
-          <i class="icon iconfont icongengduoxiao"></i>
-        </a>
-      </div>
-    </div>
-    <div class="song-bg" ref="bgImage">
-      <div class="song-body">
-        <div class="bg">
-          <img ref="conf0" :src="playlist.coverImgUrl" alt />
-          <span>
-            <i class="icon iconfont iconbofangsanjiaoxing"></i> 6.5亿
-          </span>
+  <transition name="song">
+    <div class="song" v-if="playlist">
+      <div class="song-head">
+        <div class="icon-back">
+          <a href="javascript:;" @click="back">
+            <i class="icon iconfont iconfanhui1"></i>
+          </a>
         </div>
         <div class="text">
-          <h2>{{playlist.name}}</h2>
           <div>
-            <img :src="playlist.creator.avatarUrl" alt />
-            {{playlist.creator.nickname}}
+            <h3>歌单</h3>
+            <p>编辑推荐：优质华语新歌，网易云音乐每周二精选</p>
           </div>
-          <p v-html="playlist.description"></p>
         </div>
-      </div>
-    </div>
-    <div class="song-list" ref="list">
-      <div class="title">
-        <div class="text">
-          <i class="icon iconfont iconzanting"></i> 播放全部
-          <span>(共{{playlist.tracks.length}}首)</span>
-        </div>
-        <div class="btn-collect">
+        <div class="icon-search">
           <a href="javascript:;">
-            <i class="icon iconfont iconcreate_new"></i> 收藏(312.5万)
+            <i class="icon iconfont iconsousuo"></i>
+          </a>
+        </div>
+        <div class="icon-more">
+          <a href="javascript:;">
+            <i class="icon iconfont icongengduoxiao"></i>
           </a>
         </div>
       </div>
-      <Scroll
-        class="body-height"
-        @scroll="scroll"
-        :before-scroll="beforeScroll"
-        :listen-scroll="listenScroll"
-      >
-        <ul class="body">
-          <li v-for="(item,index) in playlist.tracks" :key="index" @click="open(index)">
-            <div class="order-num">{{index+1}}</div>
-            <div class="text">
-              <h2>
-                {{item.name}}
-                <!-- <span>{{item.ar[0].name}}</span> -->
-              </h2>
-              <p>
-                <!-- <span class="red">独家</span>
-                <span class="yellow">SQ</span>-->
-                {{item.ar[0].name}}-{{item.al.name}}
-              </p>
+      <div class="song-bg" ref="bgImage">
+        <div class="song-body">
+          <div class="bg">
+            <img ref="conf0" :src="playlist.coverImgUrl" alt />
+            <span>
+              <i class="icon iconfont iconbofangsanjiaoxing"></i> 6.5亿
+            </span>
+          </div>
+          <div class="text">
+            <h2>{{playlist.name}}</h2>
+            <div>
+              <img :src="playlist.creator.avatarUrl" alt />
+              {{playlist.creator.nickname}}
             </div>
-            <div class="icon-list">
-              <a href="javascript:;">
-                <i class="icon iconfont iconbofangsanjiaoxing"></i>
-              </a>
-              <a href="javascript:;">
-                <i class="icon iconfont icongengduoxiao"></i>
-              </a>
-            </div>
-          </li>
-        </ul>
-      </Scroll>
+            <p v-html="playlist.description"></p>
+          </div>
+        </div>
+      </div>
+      <div class="song-list" ref="list">
+        <div class="title">
+          <div class="text">
+            <i class="icon iconfont iconzanting"></i> 播放全部
+            <span>(共{{playlist.tracks.length}}首)</span>
+          </div>
+          <div class="btn-collect">
+            <a href="javascript:;">
+              <i class="icon iconfont iconcreate_new"></i> 收藏(312.5万)
+            </a>
+          </div>
+        </div>
+        <Scroll
+          class="body-height"
+          @scroll="scroll"
+          :before-scroll="beforeScroll"
+          :listen-scroll="listenScroll"
+        >
+          <ul class="body">
+            <li v-for="(item,index) in playlist.tracks" :key="index" @click="open(index)">
+              <div class="order-num">{{index+1}}</div>
+              <div class="text">
+                <h2>
+                  {{item.name}}
+                  <!-- <span>{{item.ar[0].name}}</span> -->
+                </h2>
+                <p>
+                  <!-- <span class="red">独家</span>
+                  <span class="yellow">SQ</span>-->
+                  {{item.ar[0].name}}-{{item.al.name}}
+                </p>
+              </div>
+              <div class="icon-list">
+                <a href="javascript:;">
+                  <i class="icon iconfont iconbofangsanjiaoxing"></i>
+                </a>
+                <a href="javascript:;">
+                  <i class="icon iconfont icongengduoxiao"></i>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </Scroll>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -160,7 +162,21 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~@/assets/css/variable.styl';
-
+.song-enter-active, .song-leave-active {
+  transition: all 0.5s ease;
+}
+.song-leave-to {
+  transform: translate(-100%);
+  opacity: 0;
+}
+.song-enter, .song-leave-to {
+  transform: translate(100%);
+  opacity: 1;
+}
+.song-enter-to {
+  transform: translate(-100%);
+  opacity: 1;
+}
 .song {
   position: fixed;
   top: 0px;

@@ -96,7 +96,7 @@ export default {
   },
   mounted() {
     if (this.openedPlayer) {
-      this.play();
+      this.play(this.song.id);
     }
   },
   methods: {
@@ -135,8 +135,8 @@ export default {
     close() {
       this.$store.dispatch("app/toggleOpenedPlayer");
     },
-    play: async function() {
-      let values = { id: this.song.id };
+    play: async function(id) {
+      let values = { id: id };
       const req = await reqSongUrl(values);
       if (req.data.code == 200) {
         this.current = this.currentIndex;
@@ -153,7 +153,7 @@ export default {
   },
   watch: {
     song: function() {
-      this.play();
+      this.play(this.song.id);
     }
   }
 };

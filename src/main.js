@@ -9,9 +9,11 @@ import "./assets/font/iconfont.css"
 import message from "./plugin/message"
 import swipe from "./plugin/swipe"
 import button from "./plugin/button"
+import radio from "./plugin/radio"
 Vue.use(message)
 Vue.use(swipe)
 Vue.use(button)
+Vue.use(radio)
 
 Vue.config.productionTip = false
 
