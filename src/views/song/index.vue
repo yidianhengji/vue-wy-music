@@ -107,7 +107,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      playlist: "playlist"
+      playlist: "playlist",
+      song: "song",
+      currentIndex: "currentIndex"
     })
   },
   mounted() {
@@ -138,7 +140,6 @@ export default {
       let id = this.playlist.trackIds[index].id;
       let desc = this.playlist.tracks[index];
       let arr = [];
-
       let data = {
         id: id,
         name: desc.name,
@@ -162,21 +163,26 @@ export default {
 
 <style lang="stylus" scoped>
 @import '~@/assets/css/variable.styl';
+
 .song-enter-active, .song-leave-active {
   transition: all 0.5s ease;
 }
+
 .song-leave-to {
   transform: translate(-100%);
   opacity: 0;
 }
+
 .song-enter, .song-leave-to {
   transform: translate(100%);
   opacity: 1;
 }
+
 .song-enter-to {
   transform: translate(-100%);
   opacity: 1;
 }
+
 .song {
   position: fixed;
   top: 0px;

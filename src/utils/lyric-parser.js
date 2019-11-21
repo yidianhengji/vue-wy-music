@@ -40,7 +40,7 @@ export default class Lyric {
   }
 
   _initLines () {
-    const lines = this.lrc.split('↵')
+    const lines = this.lrc.split('\n')
     const offset = parseInt(this.tags['offset']) || 0
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i]
@@ -62,7 +62,6 @@ export default class Lyric {
   }
 
   _findCurNum (time) {
-    debugger
     for (let i = 0; i < this.lines.length; i++) {
       if (time <= this.lines[i].time) {
         return i
