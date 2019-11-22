@@ -6,14 +6,8 @@ import "./assets/css/reast.css"
 import "./assets/css/animate.css"
 import "./assets/font/iconfont.css"
 
-import message from "./plugin/message"
-import swipe from "./plugin/swipe"
-import button from "./plugin/button"
-import radio from "./plugin/radio"
-Vue.use(message)
-Vue.use(swipe)
-Vue.use(button)
-Vue.use(radio)
+import "./plugin"
+
 
 Vue.config.productionTip = false
 

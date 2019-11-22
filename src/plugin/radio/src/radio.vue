@@ -1,17 +1,16 @@
 <template>
   <label
-    class="el-radio"
+    class="g-radio"
     :class="[
     value===label ? 'is-checked':'',
     block ? 'is-block' : '',
     disabled ? 'is-disabled' : ''
   ]"
-    role="radio"
   >
-    <span class="el-radio__input">
-      <span class="el-radio__inner"></span>
+    <span class="g-radio__input">
+      <span class="g-radio__inner"></span>
       <input
-        class="el-radio__original"
+        class="g-radio__original"
         :name="name"
         type="radio"
         :value="label"
@@ -20,7 +19,7 @@
         @change="handleChange"
       />
     </span>
-    <span class="el-radio__label">
+    <span class="g-radio__label">
       <slot></slot>
     </span>
   </label>
@@ -44,7 +43,6 @@ export default {
   computed: {},
   methods: {
     handleChange(e) {
-      console.log(e.target.value);
       this.$emit("input", e.target.value);
     },
     handleClick(e) {
@@ -55,7 +53,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.el-radio {
+.g-radio {
   color: #606266;
   font-weight: 500;
   line-height: 1;
@@ -70,7 +68,7 @@ export default {
   -webkit-user-select: none;
   -ms-user-select: none;
 
-  .el-radio__input {
+  .g-radio__input {
     white-space: nowrap;
     cursor: pointer;
     outline: none;
@@ -79,7 +77,7 @@ export default {
     position: relative;
     vertical-align: middle;
 
-    .el-radio__inner {
+    .g-radio__inner {
       border: 1px solid #DCDFE6;
       border-radius: 100%;
       width: 14px;
@@ -104,7 +102,7 @@ export default {
       }
     }
 
-    .el-radio__original {
+    .g-radio__original {
       opacity: 0;
       outline: none;
       position: absolute;
@@ -117,15 +115,15 @@ export default {
     }
   }
 
-  .el-radio__label {
+  .g-radio__label {
     font-size: 14px;
     padding-left: 10px;
   }
 }
 
 .is-checked {
-  .el-radio__input {
-    .el-radio__inner {
+  .g-radio__input {
+    .g-radio__inner {
       border-color: #409EFF;
       background: #409EFF;
 
@@ -135,7 +133,7 @@ export default {
     }
   }
 
-  .el-radio__label {
+  .g-radio__label {
     color: #409EFF;
   }
 }
