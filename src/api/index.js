@@ -17,3 +17,6 @@ export const reqSongUrl = (data) => ajax("song/url", data, "GET");
 
 /* 歌曲详情 */
 export const reqSongDetail = (data) => ajax("song/detail", data, "GET");
+
+/* 歌曲歌词 */
+export const reqLyric = (data) => ajax("lyric", data, "GET");

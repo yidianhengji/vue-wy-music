@@ -11,7 +11,7 @@
       <h2 class="subtitle">{{song.author}}</h2>
     </div>
     <div class="middle">
-      <div class="middle-l" ref="middleL">
+      <div class="middle-l" ref="middleL" style="display: none;">
         <div class="cd-wrapper" ref="cdWrapper">
           <div class="cd" ref="imageWrapper">
             <img class="image" :class="isPlay ? 'rotation' : ''" :src="song.picUrl" />
@@ -21,11 +21,23 @@
           <div class="playing-lyric">dfdsf</div>
         </div>
       </div>
-      <div class="middle-r" style="display: none;">
-        <div class="lyric-wrapper">
-          <div class="pure-music">
-            <p>dsadsadasd</p>
-          </div>
+      <div class="middle-r">
+        <div class="lyric-wrapper" v-if="currentLyric && currentLyric.lines">
+          <Scroll
+            ref="lyricSidebar"
+            class="lyric-wrapper-bar"
+            :before-scroll="beforeScroll"
+            :listen-scroll="listenScroll"
+            :data="currentLyric && currentLyric.lines"
+          >
+            <div class="pure-music">
+              <p
+                v-for="(item,index) in currentLyric.lines"
+                :key="index"
+                :class="{'current':currentLineNum===index}"
+              >{{item.txt}}</p>
+            </div>
+          </Scroll>
         </div>
       </div>
     </div>
@@ -66,22 +78,38 @@
         </div>
       </div>
     </div>
-    <audio ref="audio" :autoplay="autoplay" controls="controls" @timeupdate="updateTime"></audio>
+    <audio
+      ref="audio"
+      :autoplay="autoplay"
+      controls="controls"
+      @timeupdate="updateTime"
+      style="opacity: 0;"
+    ></audio>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import { reqSongUrl } from "@/api";
+import { reqSongUrl, reqLyric } from "@/api";
 import { secondTime } from "@/utils/common";
+import Lyric from "@/utils/lyric-parser";
+import Scroll from "@/components/scroll/scroll";
 export default {
+  components: {
+    Scroll
+  },
   data() {
     return {
+      beforeScroll: true,
+      listenScroll: true,
       autoplay: false, //是否播放
       isPlay: true,
       current: 0,
       duration: 0,
-      currentTime: 0
+      currentTime: 0,
+      currentLyric: null,
+      lyric: null,
+      currentLineNum: 0
     };
   },
   computed: {
@@ -97,6 +125,7 @@ export default {
   mounted() {
     if (this.openedPlayer) {
       this.play(this.song.id);
+      this.lyricFn(this.song.id);
     }
   },
   methods: {
@@ -117,6 +146,7 @@ export default {
         this.current = this.song.order.length;
       }
       this.$store.dispatch("app/currentIndexData", this.current);
+      this.switch();
     },
     // 下一首
     next() {
@@ -126,15 +156,27 @@ export default {
         this.current = 0;
       }
       this.$store.dispatch("app/currentIndexData", this.current);
+      this.switch();
+    },
+    // 切换调用的方法
+    switch() {
+      let data = {
+        id: this.song.order[this.current].id,
+        name: this.song.order[this.current].name,
+        picUrl: this.song.order[this.current].picUrl,
+        author: this.song.order[this.current].author,
+        random: this.song.random,
+        order: this.song.order
+      };
+      this.$store.dispatch("app/songData", data);
     },
     // 播放模式
-    modeBtn() {
-
-    },
+    modeBtn() {},
     // 返回按钮
     close() {
       this.$store.dispatch("app/toggleOpenedPlayer");
     },
+    // 播放事件
     play: async function(id) {
       let values = { id: id };
       const req = await reqSongUrl(values);
@@ -149,11 +191,44 @@ export default {
     },
     updateTime(e) {
       this.currentTime = secondTime(e.target.currentTime);
+    },
+    lyricFn: async function(id) {
+      let values = { id: id };
+      const req = await reqLyric(values);
+      if (req.data.code == 200) {
+        this.lyric = req.data.lrc.lyric;
+        this.$nextTick(() => {
+          this.currentLyric = new Lyric(this.lyric, this.handleLyric);
+          this.currentLyric.play();
+        });
+      }
+    },
+    handleLyric({ lineNum, txt }) {
+      this.currentLineNum = lineNum;
+      console.log(lineNum);
+      if (lineNum > 5) {
+        let lineEl = this.$refs.lyricSidebar[lineNum - 5];
+        this.$refs.lyricSidebar.scrollToElement(lineEl, 1000);
+      } else {
+        this.$refs.lyricSidebar.scrollToElement(0, 0, 1000);
+      }
     }
   },
   watch: {
-    song: function() {
-      this.play(this.song.id);
+    // 深度监听歌曲id的变化
+    song: {
+      handler(n, o) {
+        if (o) {
+          if (n.id !== o.id) {
+            this.play(n.id);
+            this.lyricFn(n.id);
+          }
+        } else {
+          this.play(n.id);
+          this.lyricFn(n.id);
+        }
+      },
+      deep: true
     }
   }
 };
@@ -309,19 +384,24 @@ export default {
         margin: 0 auto;
         overflow: hidden;
         text-align: center;
+        height: 100%;
+
+        .lyric-wrapper-bar {
+          height: 100%;
+          overflow: hidden;
+        }
 
         .text {
           line-height: 32px;
           color: rgba(255, 255, 255, 0.5);
           font-size: 14px;
+        }
 
-          &.current {
-            color: #fff;
-          }
+        .current {
+          color: #fff;
         }
 
         .pure-music {
-          padding-top: 50%;
           line-height: 32px;
           color: rgba(255, 255, 255, 0.5);
           font-size: 14px;
