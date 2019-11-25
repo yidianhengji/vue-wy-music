@@ -10,8 +10,13 @@
       <h1 class="title">{{song.name}}</h1>
       <h2 class="subtitle">{{song.author}}</h2>
     </div>
-    <div class="middle">
-      <div class="middle-l" ref="middleL" style="display: none;">
+    <div
+      class="middle"
+      @touchstart.prevent="middleTouchStart"
+      @touchmove.prevent="middleTouchMove"
+      @touchend="middleTouchEnd"
+    >
+      <div class="middle-l" ref="middleL">
         <div class="cd-wrapper" ref="cdWrapper">
           <div class="cd" ref="imageWrapper">
             <img class="image" :class="isPlay ? 'rotation' : ''" :src="song.picUrl" />
@@ -21,7 +26,7 @@
           <div class="playing-lyric">dfdsf</div>
         </div>
       </div>
-      <div class="middle-r">
+      <div class="middle-r" ref="middleR">
         <div class="lyric-wrapper" v-if="currentLyric && currentLyric.lines">
           <Scroll
             ref="lyricSidebar"
@@ -94,7 +99,9 @@ import { reqSongUrl, reqLyric } from "@/api";
 import { secondTime } from "@/utils/common";
 import Lyric from "@/utils/lyric-parser";
 import Scroll from "@/components/scroll/scroll";
+import { playerMixin } from "./large-player";
 export default {
+  mixins: [playerMixin],
   components: {
     Scroll
   },

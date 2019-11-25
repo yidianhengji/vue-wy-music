@@ -46,17 +46,14 @@
       <span class="time time-l">1</span>
       <div class="progress-bar-wrapper">
         <div class="progress-bar" ref="progressBar">
-          <div class="bar-inner">
-            <div class="progress" ref="progress"></div>
+          <div class="bar-inner" ref="progress" @click="progressClick">
             <div
               class="progress-btn-wrapper"
               ref="progressBtn"
               @touchstart.prevent="progressTouchStart"
               @touchmove.prevent="progressTouchMove"
               @touchend="progressTouchEnd"
-            >
-              <div class="progress-btn"></div>
-            </div>
+            ></div>
           </div>
         </div>
       </div>
@@ -87,22 +84,48 @@ export default {
   },
   methods: {
     progressTouchStart(e) {
-      this.touch.initiated = true;
-      this.touch.startX = e.touches[0].pageX;
-      this.touch.left = this.$refs.progress.clientWidth;
+      let bodyWidth = document.body.clientWidth;
+      let progressWidth = this.$refs.progress.clientWidth;
+      let progressBtn = this.$refs.progressBtn.offsetWidth;
+      this.touch.initiated = true; // 是否启动
+      this.touch.startX = (bodyWidth - progressWidth) / 2; // 线的起始位置
+      this.touch.endX = bodyWidth - this.touch.startX; // 线的终点位置
+      this.touch.left = this.$refs.progress.clientWidth; // 线的长度
+      this.touch.spotWidth = progressBtn / 2; // 点一半的宽度
     },
     progressTouchMove(e) {
       if (!this.touch.initiated) {
         return;
       }
-      const deltaX = e.touches[0].pageX - this.touch.startX;
-      console.log(deltaX)
-      if (deltaX > 0) {
-        this.$refs.progressBtn.style.left = deltaX + "px";
+      if (e.touches[0].pageX > this.touch.startX) {
+        this.$refs.progressBtn.style.left =
+          e.touches[0].pageX - this.touch.startX - this.touch.spotWidth + "px";
+      }
+      if (e.touches[0].pageX > this.touch.endX) {
+        this.$refs.progressBtn.style.left =
+          this.touch.left - this.touch.spotWidth + "px";
       }
     },
     progressTouchEnd(e) {
-      console.log(e);
+      this.touch.initiated = false;
+    },
+    progressClick(e) {
+      let bodyWidth = document.body.clientWidth;
+      let progressWidth = this.$refs.progress.clientWidth;
+      let progressBtn = this.$refs.progressBtn.offsetWidth;
+      this.touch.initiated = true; // 是否启动
+      this.touch.startX = (bodyWidth - progressWidth) / 2; // 线的起始位置
+      this.touch.endX = bodyWidth - this.touch.startX; // 线的终点位置
+      this.touch.left = this.$refs.progress.clientWidth; // 线的长度
+      this.touch.spotWidth = progressBtn / 2; // 点一半的宽度
+      if (e.pageX > this.touch.startX) {
+        this.$refs.progressBtn.style.left =
+          e.pageX - this.touch.startX - this.touch.spotWidth + "px";
+      }
+      if (e.pageX > this.touch.endX) {
+        this.$refs.progressBtn.style.left =
+          this.touch.left - this.touch.spotWidth + "px";
+      }
     }
   }
 };
@@ -157,22 +180,15 @@ export default {
 
         .progress-btn-wrapper {
           position: absolute;
-          left: -8px;
-          top: -13px;
-          width: 30px;
-          height: 30px;
-
-          .progress-btn {
-            position: relative;
-            top: 7px;
-            left: 7px;
-            box-sizing: border-box;
-            width: 16px;
-            height: 16px;
-            border: 3px solid #fff;
-            border-radius: 50%;
-            background: #ffcd32;
-          }
+          top: -6px;
+          left: -6.5px;
+          -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+          width: 16px;
+          height: 16px;
+          border: 3px solid #fff;
+          border-radius: 50%;
+          background: #ffcd32;
         }
       }
     }

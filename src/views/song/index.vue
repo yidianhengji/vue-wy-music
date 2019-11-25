@@ -300,6 +300,11 @@ export default {
           font-weight: bold;
           color: #ffffff;
           line-height: 24px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
         }
 
         div {
