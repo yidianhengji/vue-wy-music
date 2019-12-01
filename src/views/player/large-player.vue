@@ -1,86 +1,109 @@
 <template>
-  <div class="large-player" v-if="song">
-    <div class="background">
-      <img width="100%" height="100%" :src="song.picUrl" />
-    </div>
-    <div class="top">
-      <div class="back" @click="close">
-        <i class="icon iconfont icondown-xiangxia1"></i>
-      </div>
-      <h1 class="title">{{song.name}}</h1>
-      <h2 class="subtitle">{{song.author}}</h2>
-    </div>
-    <div
-      class="middle"
-      @touchstart.prevent="middleTouchStart"
-      @touchmove.prevent="middleTouchMove"
-      @touchend="middleTouchEnd"
-    >
-      <div class="middle-l" ref="middleL">
-        <div class="cd-wrapper" ref="cdWrapper">
-          <div class="cd" ref="imageWrapper">
-            <img class="image" :class="isPlay ? 'rotation' : ''" :src="song.picUrl" />
+  <div>
+    <div class="large-player" v-show="openedPlayer">
+      <div v-if="song">
+        <div class="background">
+          <img width="100%" height="100%" :src="song.picUrl" />
+        </div>
+        <div class="top">
+          <div class="back" @click="close">
+            <i class="icon iconfont icondown-xiangxia1"></i>
           </div>
+          <h1 class="title">{{song.name}}</h1>
+          <h2 class="subtitle">{{song.author}}</h2>
         </div>
-        <div class="playing-lyric-wrapper">
-          <div class="playing-lyric">dfdsf</div>
-        </div>
-      </div>
-      <div class="middle-r" ref="middleR">
-        <div class="lyric-wrapper" v-if="currentLyric && currentLyric.lines">
-          <Scroll
-            ref="lyricSidebar"
-            class="lyric-wrapper-bar"
-            :before-scroll="beforeScroll"
-            :listen-scroll="listenScroll"
-            :data="currentLyric && currentLyric.lines"
-          >
-            <div class="pure-music">
-              <p
-                v-for="(item,index) in currentLyric.lines"
-                :key="index"
-                :class="{'current':currentLineNum===index}"
-              >{{item.txt}}</p>
-            </div>
-          </Scroll>
-        </div>
-      </div>
-    </div>
-    <div class="bottom">
-      <div class="dot-wrapper">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-      </div>
-      <div class="progress-wrapper">
-        <span class="time time-l">{{this.currentTime}}</span>
-        <div class="progress-bar-wrapper">
-          <div class="progress-bar">
-            <div class="bar-inner">
-              <div class="progress"></div>
-              <div class="progress-btn-wrapper">
-                <div class="progress-btn"></div>
+        <div
+          class="middle"
+          @touchstart.prevent="middleTouchStart"
+          @touchmove.prevent="middleTouchMove"
+          @touchend="middleTouchEnd"
+        >
+          <div class="middle-l" ref="middleL">
+            <div class="cd-wrapper" ref="cdWrapper">
+              <div class="cd" ref="imageWrapper">
+                <img class="image" :class="isPlay ? 'rotation' : ''" :src="song.picUrl" />
               </div>
             </div>
+            <div class="playing-lyric-wrapper">
+              <div class="playing-lyric">{{playingLyric}}</div>
+            </div>
+          </div>
+          <div class="middle-r" ref="lyricList">
+            <div class="lyric-wrapper" v-if="currentLyric && currentLyric.lines">
+              <Scroll
+                ref="lyricSidebar"
+                class="lyric-wrapper-bar"
+                :before-scroll="beforeScroll"
+                :listen-scroll="listenScroll"
+                :data="currentLyric && currentLyric.lines"
+              >
+                <div class="pure-music">
+                  <p
+                    v-for="(item,index) in currentLyric.lines"
+                    :key="index"
+                    :class="{'current':currentLineNum===index}"
+                  >{{item.txt}}</p>
+                </div>
+              </Scroll>
+            </div>
           </div>
         </div>
-        <span class="time time-r">{{this.duration}}</span>
+        <div class="bottom">
+          <div class="dot-wrapper">
+            <span class="dot" :class="{'active':currentShow==='cd'}"></span>
+            <span class="dot" :class="{'active':currentShow==='lyric'}"></span>
+          </div>
+          <div class="progress-wrapper">
+            <span class="time time-l">{{this.currentTime}}</span>
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar">
+                <div class="bar-inner">
+                  <div class="progress"></div>
+                  <div class="progress-btn-wrapper">
+                    <div class="progress-btn"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <span class="time time-r">{{this.duration}}</span>
+          </div>
+          <div class="operators">
+            <div class="icon i-left">
+              <i class="icon iconfont iconicon-test9" @click="modeBtn"></i>
+            </div>
+            <div class="icon i-left" @click="prev">
+              <i class="icon iconfont iconicon-test3"></i>
+            </div>
+            <div class="icon i-center" @click="playAndSuspend">
+              <i class="icon iconfont" :class="isPlayClass"></i>
+            </div>
+            <div class="icon i-right" @click="next">
+              <i class="icon iconfont iconicon-test7"></i>
+            </div>
+            <div class="icon i-right">
+              <i class="icon iconfont iconlove"></i>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="operators">
-        <div class="icon i-left">
-          <i class="icon iconfont iconicon-test9" @click="modeBtn"></i>
+    </div>
+    <div class="small-player" @click="open" v-show="smallPlayer">
+      <div class="left" v-if="song">
+        <div class="player-bg">
+          <img class="rotation" :src="song.picUrl" alt />
         </div>
-        <div class="icon i-left" @click="prev">
-          <i class="icon iconfont iconicon-test3"></i>
+        <div class="player-info">
+          <h4>{{song.name}}</h4>
+          <h5>{{song.author}}</h5>
         </div>
-        <div class="icon i-center" @click="playAndSuspend">
-          <i class="icon iconfont" :class="isPlayClass"></i>
-        </div>
-        <div class="icon i-right" @click="next">
-          <i class="icon iconfont iconicon-test7"></i>
-        </div>
-        <div class="icon i-right">
-          <i class="icon iconfont iconlove"></i>
-        </div>
+      </div>
+      <div class="right" v-if="song">
+        <span class="player">
+          <i class="icon iconfont iconzanting"></i>
+        </span>
+        <span class="list">
+          <i class="icon iconfont iconliebiao"></i>
+        </span>
       </div>
     </div>
     <audio
@@ -99,9 +122,26 @@ import { reqSongUrl, reqLyric } from "@/api";
 import { secondTime } from "@/utils/common";
 import Lyric from "@/utils/lyric-parser";
 import Scroll from "@/components/scroll/scroll";
-import { playerMixin } from "./large-player";
+let elementStyle = document.createElement("div").style;
+let vendor = (() => {
+  let transformNames = {
+    webkit: "webkitTransform",
+    Moz: "MozTransform",
+    O: "OTransform",
+    ms: "msTransform",
+    standard: "transform"
+  };
+
+  for (let key in transformNames) {
+    if (elementStyle[transformNames[key]] !== undefined) {
+      return key;
+    }
+  }
+
+  return false;
+})();
 export default {
-  mixins: [playerMixin],
+  //mixins: [playerMixin],
   components: {
     Scroll
   },
@@ -116,7 +156,9 @@ export default {
       currentTime: 0,
       currentLyric: null,
       lyric: null,
-      currentLineNum: 0
+      currentLineNum: 0,
+      currentShow: "cd",
+      playingLyric: ""
     };
   },
   computed: {
@@ -126,8 +168,12 @@ export default {
     ...mapGetters({
       song: "song",
       openedPlayer: "openedPlayer",
+      smallPlayer: "smallPlayer",
       currentIndex: "currentIndex"
     })
+  },
+  created() {
+    this.touch = {};
   },
   mounted() {
     if (this.openedPlayer) {
@@ -182,6 +228,11 @@ export default {
     // 返回按钮
     close() {
       this.$store.dispatch("app/toggleOpenedPlayer");
+      this.$store.dispatch("app/toggleSmallPlayer", true);
+    },
+    open() {
+      this.$store.dispatch("app/toggleOpenedPlayer");
+      this.$store.dispatch("app/toggleSmallPlayer", false);
     },
     // 播放事件
     play: async function(id) {
@@ -212,13 +263,96 @@ export default {
     },
     handleLyric({ lineNum, txt }) {
       this.currentLineNum = lineNum;
-      console.log(lineNum);
+      this.playingLyric = txt;
       if (lineNum > 5) {
         let lineEl = this.$refs.lyricSidebar[lineNum - 5];
         this.$refs.lyricSidebar.scrollToElement(lineEl, 1000);
       } else {
         this.$refs.lyricSidebar.scrollToElement(0, 0, 1000);
       }
+    },
+    middleTouchStart(e) {
+      this.touch.initiated = true;
+      // 用来判断是否是一次移动
+      this.touch.moved = false;
+      const touch = e.touches[0];
+      this.touch.startX = touch.pageX;
+      this.touch.startY = touch.pageY;
+    },
+    middleTouchMove(e) {
+      if (!this.touch.initiated) {
+        return;
+      }
+      const touch = e.touches[0];
+      const deltaX = touch.pageX - this.touch.startX;
+      const deltaY = touch.pageY - this.touch.startY;
+      const transform = this.prefixStyle("transform");
+      const transitionDuration = this.prefixStyle("transitionDuration");
+      if (Math.abs(deltaY) > Math.abs(deltaX)) {
+        return;
+      }
+      if (!this.touch.moved) {
+        this.touch.moved = true;
+      }
+      const left = this.currentShow === "cd" ? 0 : -window.innerWidth;
+      const offsetWidth = Math.min(
+        0,
+        Math.max(-window.innerWidth, left + deltaX)
+      );
+      this.touch.percent = Math.abs(offsetWidth / window.innerWidth);
+      this.$refs.lyricList.style[
+        transform
+      ] = `translate3d(${offsetWidth}px,0,0)`;
+      this.$refs.lyricList.style[transitionDuration] = 0;
+      this.$refs.middleL.style.opacity = 1 - this.touch.percent;
+      this.$refs.middleL.style[transitionDuration] = 0;
+    },
+    middleTouchEnd(e) {
+      if (!this.touch.moved) {
+        return;
+      }
+      const transform = this.prefixStyle("transform");
+      const transitionDuration = this.prefixStyle("transitionDuration");
+      let offsetWidth;
+      let opacity;
+      if (this.currentShow === "cd") {
+        if (this.touch.percent > 0.1) {
+          offsetWidth = -window.innerWidth;
+          opacity = 0;
+          this.currentShow = "lyric";
+        } else {
+          offsetWidth = 0;
+          opacity = 1;
+        }
+      } else {
+        if (this.touch.percent < 0.9) {
+          offsetWidth = 0;
+          this.currentShow = "cd";
+          opacity = 1;
+        } else {
+          offsetWidth = -window.innerWidth;
+          opacity = 0;
+        }
+      }
+      const time = 300;
+      this.$refs.lyricList.style[
+        transform
+      ] = `translate3d(${offsetWidth}px,0,0)`;
+      this.$refs.lyricList.style[transitionDuration] = `${time}ms`;
+      this.$refs.middleL.style.opacity = opacity;
+      this.$refs.middleL.style[transitionDuration] = `${time}ms`;
+      this.touch.initiated = false;
+    },
+    prefixStyle(style) {
+      if (vendor === false) {
+        return false;
+      }
+
+      if (vendor === "standard") {
+        return style;
+      }
+
+      return vendor + style.charAt(0).toUpperCase() + style.substr(1);
     }
   },
   watch: {
@@ -540,6 +674,92 @@ export default {
 
       .icon-favorite {
         color: #d93f30;
+      }
+    }
+  }
+}
+
+.small-player {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 60px;
+  overflow: hidden;
+  border-top: 1px solid #ebebeb;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background: #ffffff;
+  z-index: 11;
+
+  .left {
+    height: 100%;
+    float: left;
+    display: flex;
+    align-items: center;
+
+    .player-bg {
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+      margin-right: 10px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+
+      @keyframes rotation {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      .rotation {
+        -webkit-transform: rotate(360deg);
+        animation: rotation 15s linear infinite;
+        -moz-animation: rotation 15s linear infinite;
+        -webkit-animation: rotation 15s linear infinite;
+        -o-animation: rotation 15s linear infinite;
+      }
+    }
+
+    .player-info {
+      h4 {
+        color: #353535;
+        font-size: 16px;
+      }
+
+      h5 {
+        margin-top: 6px;
+        color: #808080;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .right {
+    height: 100%;
+    float: right;
+    display: flex;
+    align-items: center;
+
+    .player {
+      i {
+        color: #555555;
+        font-size: 40px;
+      }
+    }
+
+    .list {
+      i {
+        color: #555555;
+        font-size: 40px;
       }
     }
   }

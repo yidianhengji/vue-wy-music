@@ -4,20 +4,17 @@
     <div class="main" :style="mainHeight">
       <router-view />
     </div>
-    <SmallPlayer v-show="!openedPlayer"></SmallPlayer>
-    <LargePlayer v-show="openedPlayer"></LargePlayer>
+    <LargePlayer></LargePlayer>
   </div>
 </template>
 
 <script>
 import Header from "./components/header";
-import SmallPlayer from "../player/small-player";
-import LargePlayer from "../player/large-player";
+import LargePlayer from "../player/large-player.vue";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
     Header,
-    SmallPlayer,
     LargePlayer
   },
   data() {
@@ -27,10 +24,11 @@ export default {
   },
   computed: {
     ...mapGetters({
+      smallPlayer: "smallPlayer",
       openedPlayer: "openedPlayer"
     }),
     mainHeight: function() {
-      return !this.openedPlayer
+      return this.smallPlayer
         ? "padding-bottom: 60px; height: calc(100% - 108px);"
         : "";
     }

@@ -1,6 +1,6 @@
 <template>
   <transition name="song">
-    <div class="song" v-if="playlist">
+    <div class="song" :style="mainHeight" v-if="playlist">
       <div class="song-head">
         <div class="icon-back">
           <a href="javascript:;" @click="back">
@@ -108,9 +108,15 @@ export default {
   computed: {
     ...mapGetters({
       playlist: "playlist",
+      smallPlayer: "smallPlayer",
       song: "song",
       currentIndex: "currentIndex"
-    })
+    }),
+    mainHeight: function() {
+      return this.smallPlayer
+        ? "bottom: 60px;"
+        : "";
+    }
   },
   mounted() {
     if (!this.playlist) {
@@ -151,6 +157,7 @@ export default {
       this.$store.dispatch("app/songData", data);
       this.$store.dispatch("app/toggleOpenedPlayer");
       this.$store.dispatch("app/currentIndexData", index);
+      this.$store.dispatch("app/toggleSmallPlayer", false);
     }
   },
   watch: {
@@ -187,7 +194,7 @@ export default {
   position: fixed;
   top: 0px;
   left: 0px;
-  bottom: 60px;
+  bottom: 0px;
   z-index: 10;
   background: #fff;
   width: 100%;
